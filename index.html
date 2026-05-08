@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Workload Tracking Form</title>
+<style>
+  :root {
+    --primary: #1a3c5e;
+    --accent: #2e86c1;
+    --light-accent: #d6eaf8;
+    --success: #1e8449;
+    --warning: #d4ac0d;
+    --danger: #c0392b;
+    --bg: #f4f6f9;
+    --white: #ffffff;
+    --text: #2c3e50;
+    --border: #ccd6e0;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+  .site-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    color: #fff; padding: 28px 0 18px; text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 100;
+  }
+  .site-header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: 0.5px; }
+  .site-header p { font-size: 0.95rem; opacity: 0.88; margin-top: 4px; }
+  .progress-wrap { background: rgba(255,255,255,0.2); height: 6px; margin-top: 16px; border-radius: 3px; overflow: hidden; }
+  .progress-bar { height: 100%; background: #f9ca24; border-radius: 3px; transition: width 0.4s ease; width: 20%; }
+  .steps { display: flex; justify-content: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  .step-pill { padding: 4px 14px; border-radius: 20px; font-size: 0.78rem; background: rgba(255,255,255,0.15); cursor: pointer; transition: background 0.2s; }
+  .step-pill.active { background: rgba(255,255,255,0.4); font-weight: 700; }
+  .container { max-width: 900px; margin: 30px auto 50px; padding: 0 16px; }
+  .section-card { background: #fff; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 28px; overflow: hidden; display: none; }
+  .section-card.active { display: block; }
+  .section-header { background: var(--primary); color: #fff; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
+  .section-header .icon { font-size: 1.4rem; }
+  .section-header h2 { font-size: 1.1rem; font-weight: 600; }
+  .section-body { padding: 24px; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { font-size: 0.85rem; font-weight: 600; color: var(--primary); }
+  input[type=text], input[type=date], input[type=email], input[type=number], select, textarea {
+    padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 0.92rem; color: var(--text); transition: border-color 0.2s, box-shadow 0.2s;
+    background: #fafcff; width: 100%;
+  }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(46,134,193,0.12); }
+  textarea { resize: vertical; min-height: 80px; }
+  .required { color: var(--danger); margin-left: 2px; }
+  .task-table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  thead th { padding: 8px; font-weight: 600; text-align: left; border-bottom: 2px solid var(--border); background: #f8faff; color: var(--primary); white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid #eef1f7; }
+  tbody tr:hover { background: #f9fbff; }
+  tbody td { padding: 6px; vertical-align: middle; }
+  tbody td input, tbody td select { font-size: 0.8rem; padding: 6px 8px; }
+  .add-row-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 7px 16px; background: var(--light-accent); color: var(--accent); border: 1.5px dashed var(--accent); border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+  .add-row-btn:hover { background: #bde0f7; }
+  .del-btn { background: #fde8e8; border: none; border-radius: 6px; color: var(--danger); padding: 4px 8px; cursor: pointer; font-size: 0.85rem; }
+  .del-btn:hover { background: #fbbaba; }
+  .summary-card { background: linear-gradient(135deg, #f0f7ff, #e8f4ff); border: 1.5px solid #bee3f8; border-radius: 12px; padding: 20px; margin-top: 20px; }
+  .summary-title { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 14px; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .kpi { background: #fff; border-radius: 10px; padding: 14px; text-align: center; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+  .kpi .value { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
+  .kpi .label { font-size: 0.78rem; color: #7f8c8d; margin-top: 2px; }
+  .status-banner { margin-top: 16px; padding: 12px 18px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; text-align: center; }
+  .status-overloaded { background: #fde8e8; color: var(--danger); }
+  .status-high { background: #fef3e2; color: #d35400; }
+  .status-optimal { background: #e8f8f5; color: var(--success); }
+  .status-under { background: #eaf4fe; color: var(--accent); }
+  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; }
+  .btn { padding: 11px 28px; border: none; border-radius: 9px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .btn-secondary { background: #ecf0f1; color: var(--text); }
+  .btn-secondary:hover { background: #d5dbdb; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #1a70a3; }
+  .btn-success { background: var(--success); color: #fff; display: flex; align-items: center; gap: 8px; }
+  .btn-success:hover { background: #196040; }
+  .success-screen { text-align: center; padding: 60px 24px; display: none; }
+  .success-screen.show { display: block; }
+  .success-icon { font-size: 4rem; margin-bottom: 16px; }
+  .success-screen h2 { color: var(--success); font-size: 1.5rem; margin-bottom: 8px; }
+  .success-screen p { color: #7f8c8d; font-size: 1rem; max-width: 400px; margin: 0 auto; }
+  .ref-id { margin-top: 16px; font-size: 0.85rem; color: var(--accent); font-weight: 600; }
+  .spinner { display: none; border: 3px solid #ecf0f1; border-top: 3px solid var(--accent); border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (max-width: 680px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+    .site-header h1 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <h1>&#128203; Employee Workload Tracking Form</h1>
+  <p>Submit your workload data securely and efficiently</p>
+  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  <div class="steps" id="stepLabels">
+    <span class="step-pill active" data-step="1">1. Profile</span>
+    <span class="step-pill" data-step="2">2. Daily Tasks</span>
+    <span class="step-pill" data-step="3">3. Weekly Tasks</span>
+    <span class="step-pill" data-step="4">4. Monthly Tasks</span>
+    <span class="step-pill" data-step="5">5. Assessment</span>
+  </div>
+</header>
+<div class="container">
+
+<!-- STEP 1: EMPLOYEE PROFILE -->
+<div class="section-card active" id="step1">
+  <div class="section-header"><span class="icon">&#128100;</span><h2>Section 1 — Employee Information</h2></div>
+  <div class="section-body">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Full Name <span class="required">*</span></label>
+        <input type="text" id="fullName" placeholder="e.g. Mohamed El-Sayed" required>
+      </div>
+      <div class="form-group">
+        <label>Job Title <span class="required">*</span></label>
+        <input type="text" id="jobTitle" placeholder="e.g. Operations Manager">
+      </div>
+      <div class="form-group">
+        <label>Department <span class="required">*</span></label>
+        <select id="department">
+          <option value="">— Select Department —</option>
+          <option>Operations</option><option>Finance</option><option>Human Resources</option>
+          <option>Sales &amp; Marketing</option><option>Information Technology</option>
+          <option>Legal</option><option>Administration</option><option>Customer Service</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Team Role <span class="required">*</span></label>
+        <select id="teamRole">
+          <option value="">— Select Role —</option>
+          <option>Core Team Member</option><option>Supporting Member</option>
+          <option>Team Lead</option><option>Manager</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Direct Manager <span class="required">*</span></label>
+        <input type="text" id="directManager" placeholder="e.g. Ahmed Hassan">
+      </div>
+      <div class="form-group">
+        <label>Employment Start Date</label>
+        <input type="date" id="startDate">
+      </div>
+      <div class="form-group">
+        <label>Email Address <span class="required">*</span></label>
+        <input type="email" id="emailAddress" placeholder="name@company.com">
+      </div>
+      <div class="form-group">
+        <label>Report Period <span class="required">*</span></label>
+        <input type="date" id="reportPeriod">
+      </div>
+    </div>
+    <div class="nav-row">
+      <div></div>
+      <button class="btn btn-primary" onclick="goTo(2)">Next: Daily Tasks &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: DAILY TASKS -->
+<div class="section-card" id="step2">
+  <div class="section-header"><span class="icon">&#128197;</span><h2>Section 2 — Daily Tasks</h2></div>
+  <div class="section-body">
+    <p style="color:#7f8c8d;font-size:0.85rem;margin-bottom:14px;">Log all tasks you perform on a daily basis. Fill in the estimated hours and workload percentage for each task.</p>
+    <div class="task-table-wrap">
+      <table id="dailyTable">
+        <thead><tr>
+          <th>#</th><th>Task Name / Description</th><th>Category</th>
+          <th>Est. Hours</th><th>Priority</th><th>Workload %</th><th>Notes</th><th></th>
+        </tr></thead>
+        <tbody id="dailyBody"></tbody>
+      </table>
+    </div>
+    <button class="add-row-btn" onclick="addRow('daily')">&#43; Add Daily Task</button>
+    <div class="summary-card" id="dailySummary">
+      <div class="summary-title">&#128200; Daily Workload Summary</div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="value" id="d_tasks">0</div><div class="label">Tasks Logged</div></div>
+        <div class="kpi"><div class="value" id="d_hours">0.0</div><div class="label">Total Hours/Day</div></div>
+        <div class="kpi"><div class="value" id="d_pct">0%</div><div class="label">Total Workload</div></div>
+      </div>
+      <div class="status-banner status-under" id="d_status">Status: Underutilized</div>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goTo(1)">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goTo(3)">Next: Weekly Tasks &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: WEEKLY TASKS -->
+<div class="section-card" id="step3">
+  <div class="section-header"><span class="icon">&#128466;</span><h2>Section 3 — Weekly Tasks</h2></div>
+  <div class="section-body">
+    <p style="color:#7f8c8d;font-size:0.85rem;margin-bottom:14px;">Log tasks that recur or are completed on a weekly basis.</p>
+    <div class="task-table-wrap">
+      <table id="weeklyTable">
+        <thead><tr>
+          <th>#</th><th>Task Name / Description</th><th>Category</th>
+          <th>Est. Hours</th><th>Priority</th><th>Workload %</th><th>Notes</th><th></th>
+        </tr></thead>
+        <tbody id="weeklyBody"></tbody>
+      </table>
+    </div>
+    <button class="add-row-btn" onclick="addRow('weekly')">&#43; Add Weekly Task</button>
+    <div class="summary-card">
+      <div class="summary-title">&#128200; Weekly Workload Summary</div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="value" id="w_tasks">0</div><div class="label">Tasks Logged</div></div>
+        <div class="kpi"><div class="value" id="w_hours">0.0</div><div class="label">Total Hours/Week</div></div>
+        <div class="kpi"><div class="value" id="w_pct">0%</div><div class="label">Total Workload</div></div>
+      </div>
+      <div class="status-banner status-under" id="w_status">Status: Underutilized</div>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goTo(2)">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goTo(4)">Next: Monthly Tasks &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 4: MONTHLY TASKS -->
+<div class="section-card" id="step4">
+  <div class="section-header"><span class="icon">&#128198;</span><h2>Section 4 — Monthly Tasks</h2></div>
+  <div class="section-body">
+    <p style="color:#7f8c8d;font-size:0.85rem;margin-bottom:14px;">Log tasks completed on a monthly cycle.</p>
+    <div class="task-table-wrap">
+      <table id="monthlyTable">
+        <thead><tr>
+          <th>#</th><th>Task Name / Description</th><th>Category</th>
+          <th>Est. Hours</th><th>Priority</th><th>Workload %</th><th>Notes</th><th></th>
+        </tr></thead>
+        <tbody id="monthlyBody"></tbody>
+      </table>
+    </div>
+    <button class="add-row-btn" onclick="addRow('monthly')">&#43; Add Monthly Task</button>
+    <div class="summary-card">
+      <div class="summary-title">&#128200; Monthly Workload Summary</div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="value" id="m_tasks">0</div><div class="label">Tasks Logged</div></div>
+        <div class="kpi"><div class="value" id="m_hours">0.0</div><div class="label">Total Hours/Month</div></div>
+        <div class="kpi"><div class="value" id="m_pct">0%</div><div class="label">Total Workload</div></div>
+      </div>
+      <div class="status-banner status-under" id="m_status">Status: Underutilized</div>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-secondary" onclick="goTo(3)">&#8592; Back</button>
+      <button class="btn btn-primary" onclick="goTo(5)">Next: Assessment &#8594;</button>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 5: ASSESSMENT -->
+<div class="section-card" id="step5">
+  <div class="section-header"><span class="icon">&#128202;</span><h2>Section 5 — Overall Workload Assessment</h2></div>
+  <div class="section-body">
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Overall Workload Rating</label>
+        <select id="overallRating">
+          <option value="">— Select —</option>
+          <option>1 — Very Light</option><option>2 — Light</option><option>3 — Moderate</option>
+          <option>4 — Heavy</option><option>5 — Very Heavy / Overloaded</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Work-Life Balance Rating</label>
+        <select id="wlbRating">
+          <option value="">— Select —</option>
+          <option>1 — Excellent</option><option>2 — Good</option><option>3 — Acceptable</option>
+          <option>4 — Poor</option><option>5 — Very Poor</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Key Challenges or Blockers</label>
+        <textarea id="challenges" placeholder="Describe any challenges, resource gaps, or bottlenecks you are currently facing..."></textarea>
+      </div>
+      <div class="form-group full">
+        <label>Suggestions for Improvement</label>
+        <textarea id="suggestions" placeholder="Share any suggestions to improve task allocation or team efficiency..."></textarea>
+      </div>
+      <div class="form-group full">
+        <label>Additional Notes for Management</label>
+        <textarea id="additionalNotes" placeholder="Any other notes you would like management to be aware of..."></textarea>
+      </div>
+    </div>
+    <div class="summary-card" style="margin-top:24px;">
+      <div class="summary-title">&#127775; Overall Workload Dashboard</div>
+      <div class="kpi-grid">
+        <div class="kpi"><div class="value" id="total_tasks">0</div><div class="label">Total Tasks</div></div>
+        <div class="kpi"><div class="value" id="total_hours">0.0</div><div class="label">Total Hours</div></div>
+        <div class="kpi"><div class="value" id="total_pct">0%</div><div class="label">Avg. Workload</div></div>
+      </div>
+    </div>
+    <div class="nav-row" style="margin-top:28px;">
+      <button class="btn btn-secondary" onclick="goTo(4)">&#8592; Back</button>
+      <button class="btn btn-success" id="submitBtn" onclick="submitForm()">
+        <span id="submitText">&#128228; Submit to Management</span>
+        <div class="spinner" id="submitSpinner"></div>
+      </button>
+    </div>
+    <p style="text-align:center;font-size:0.78rem;color:#95a5a6;margin-top:10px;">Your data is securely recorded in the management Google Sheet.</p>
+  </div>
+</div>
+
+<!-- SUCCESS SCREEN -->
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">&#9989;</div>
+  <h2>Submission Received!</h2>
+  <p>Your workload data has been successfully submitted to management and recorded in the dashboard sheet.</p>
+  <div class="ref-id" id="refId"></div>
+  <button class="btn btn-primary" style="margin-top:24px;" onclick="location.reload()">Submit Another Response</button>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ============================================================
+// CONFIGURATION
+// Replace the URL below with your Google Apps Script Web App URL
+// after setting up the backend (see README for instructions)
+// ============================================================
+const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+// ============================================================
+
+let currentStep = 1;
+const TOTAL_STEPS = 5;
+let rowCounters = { daily: 0, weekly: 0, monthly: 0 };
+const priorities = ['Critical', 'High', 'Medium', 'Low'];
+const catOptions = { daily: 'Daily', weekly: 'Weekly', monthly: 'Monthly' };
+
+function goTo(step) {
+  if (step < 1 || step > TOTAL_STEPS) return;
+  document.getElementById('step' + currentStep).classList.remove('active');
+  currentStep = step;
+  document.getElementById('step' + currentStep).classList.add('active');
+  document.querySelectorAll('.step-pill').forEach(p => {
+    p.classList.toggle('active', parseInt(p.dataset.step) === step);
+  });
+  document.getElementById('progressBar').style.width = (step / TOTAL_STEPS * 100) + '%';
+  if (step === 5) updateOverallSummary();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function addRow(type) {
+  const tbody = document.getElementById(type + 'Body');
+  const id = ++rowCounters[type];
+  const defCat = catOptions[type];
+  const tr = document.createElement('tr');
+  tr.id = type + '_row_' + id;
+  tr.innerHTML =
+    '<td style="font-weight:600;color:#7f8c8d;min-width:24px">' + id + '</td>' +
+    '<td><input type="text" placeholder="Task description" oninput="updateSummary(\'' + type + '\')" style="min-width:160px"></td>' +
+    '<td><select onchange="updateSummary(\'' + type + '\')">' +
+      '<option>' + defCat + '</option>' +
+      '<option>Daily</option><option>Weekly</option><option>Monthly</option>' +
+      '<option>Administrative</option><option>Reporting</option>' +
+      '<option>Meeting</option><option>Communication</option><option>Other</option>' +
+    '</select></td>' +
+    '<td><input type="number" min="0" max="24" step="0.5" placeholder="hrs" style="width:68px" oninput="updateSummary(\'' + type + '\')"></td>' +
+    '<td><select onchange="updateSummary(\'' + type + '\')">' +
+      priorities.map(function(p){ return '<option>' + p + '</option>'; }).join('') +
+    '</select></td>' +
+    '<td><input type="number" min="0" max="100" step="1" placeholder="%" style="width:60px" oninput="updateSummary(\'' + type + '\')"></td>' +
+    '<td><input type="text" placeholder="Notes" style="min-width:110px"></td>' +
+    '<td><button class="del-btn" onclick="delRow(\'' + type + '\',' + id + ')">&#10006;</button></td>';
+  tbody.appendChild(tr);
+  updateSummary(type);
+}
+
+function delRow(type, id) {
+  var row = document.getElementById(type + '_row_' + id);
+  if (row) row.remove();
+  updateSummary(type);
+}
+
+function getTableData(type) {
+  var tbody = document.getElementById(type + 'Body');
+  var rows = tbody.querySelectorAll('tr');
+  var totalHours = 0, totalPct = 0, count = 0, tasks = [];
+  rows.forEach(function(tr) {
+    var ins = tr.querySelectorAll('input, select');
+    if (ins.length < 6) return;
+    var name = ins[0].value.trim();
+    var cat = ins[1].value;
+    var hrs = parseFloat(ins[2].value) || 0;
+    var prio = ins[3].value;
+    var pct = parseFloat(ins[4].value) || 0;
+    var notes = ins[5].value.trim();
+    if (name) { totalHours += hrs; totalPct += pct; count++; tasks.push({name:name,cat:cat,hrs:hrs,prio:prio,pct:pct,notes:notes}); }
+  });
+  return { tasks: tasks, totalHours: totalHours, totalPct: totalPct, count: count };
+}
+
+function updateSummary(type) {
+  var pfx = type[0];
+  var d = getTableData(type);
+  document.getElementById(pfx + '_tasks').textContent = d.count;
+  document.getElementById(pfx + '_hours').textContent = d.totalHours.toFixed(1);
+  document.getElementById(pfx + '_pct').textContent = Math.round(d.totalPct) + '%';
+  var statusEl = document.getElementById(pfx + '_status');
+  statusEl.className = 'status-banner';
+  var pct = d.totalPct;
+  if (pct > 100) { statusEl.classList.add('status-overloaded'); statusEl.textContent = '\u{1F534} Overloaded (' + Math.round(pct) + '%)'; }
+  else if (pct >= 90) { statusEl.classList.add('status-high'); statusEl.textContent = '\u{1F7E0} High Workload (' + Math.round(pct) + '%)'; }
+  else if (pct >= 70) { statusEl.classList.add('status-optimal'); statusEl.textContent = '\u{1F7E2} Optimal (' + Math.round(pct) + '%)'; }
+  else { statusEl.classList.add('status-under'); statusEl.textContent = '\u{1F535} Underutilized (' + Math.round(pct) + '%)'; }
+}
+
+function updateOverallSummary() {
+  var d = getTableData('daily'), w = getTableData('weekly'), m = getTableData('monthly');
+  document.getElementById('total_tasks').textContent = d.count + w.count + m.count;
+  document.getElementById('total_hours').textContent = (d.totalHours + w.totalHours + m.totalHours).toFixed(1);
+  var avg = (d.totalPct + w.totalPct + m.totalPct) / 3;
+  document.getElementById('total_pct').textContent = Math.round(avg) + '%';
+}
+
+function validateStep1() {
+  var required = ['fullName','jobTitle','department','teamRole','directManager','emailAddress','reportPeriod'];
+  for (var i = 0; i < required.length; i++) {
+    if (!document.getElementById(required[i]).value.trim()) {
+      alert('Please fill in all required fields (marked with *) before proceeding.');
+      document.getElementById(required[i]).focus();
+      goTo(1); return false;
+    }
+  }
+  return true;
+}
+
+function getFormData() {
+  var d = getTableData('daily'), w = getTableData('weekly'), m = getTableData('monthly');
+  return {
+    timestamp: new Date().toISOString(),
+    submissionId: 'WL-' + Date.now(),
+    fullName: document.getElementById('fullName').value,
+    jobTitle: document.getElementById('jobTitle').value,
+    department: document.getElementById('department').value,
+    teamRole: document.getElementById('teamRole').value,
+    directManager: document.getElementById('directManager').value,
+    startDate: document.getElementById('startDate').value,
+    email: document.getElementById('emailAddress').value,
+    reportPeriod: document.getElementById('reportPeriod').value,
+    dailyTaskCount: d.count, dailyTotalHours: d.totalHours, dailyTotalPct: d.totalPct,
+    weeklyTaskCount: w.count, weeklyTotalHours: w.totalHours, weeklyTotalPct: w.totalPct,
+    monthlyTaskCount: m.count, monthlyTotalHours: m.totalHours, monthlyTotalPct: m.totalPct,
+    overallRating: document.getElementById('overallRating').value,
+    wlbRating: document.getElementById('wlbRating').value,
+    challenges: document.getElementById('challenges').value,
+    suggestions: document.getElementById('suggestions').value,
+    additionalNotes: document.getElementById('additionalNotes').value,
+    dailyTasks: JSON.stringify(d.tasks),
+    weeklyTasks: JSON.stringify(w.tasks),
+    monthlyTasks: JSON.stringify(m.tasks)
+  };
+}
+
+function submitForm() {
+  if (!validateStep1()) return;
+  var data = getFormData();
+  var btn = document.getElementById('submitBtn');
+  var txt = document.getElementById('submitText');
+  var spin = document.getElementById('submitSpinner');
+  btn.disabled = true;
+  txt.textContent = 'Submitting...';
+  spin.style.display = 'inline-block';
+
+  if (SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
+    setTimeout(function() { showSuccess(data.submissionId); }, 1500);
+    return;
+  }
+
+  var params = new URLSearchParams(data).toString();
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: params
+  }).then(function() {
+    showSuccess(data.submissionId);
+  }).catch(function() {
+    alert('Submission failed. Please try again or contact IT support.');
+    btn.disabled = false;
+    txt.textContent = '\u{1F4E8} Submit to Management';
+    spin.style.display = 'none';
+  });
+}
+
+function showSuccess(id) {
+  document.getElementById('step5').classList.remove('active');
+  var s = document.getElementById('successScreen');
+  s.classList.add('show');
+  document.getElementById('refId').textContent = 'Reference ID: ' + id;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+window.onload = function() {
+  addRow('daily'); addRow('daily'); addRow('daily');
+  addRow('weekly'); addRow('weekly');
+  addRow('monthly'); addRow('monthly');
+  document.getElementById('reportPeriod').value = new Date().toISOString().split('T')[0];
+};
+</script>
+</body>
+</html>
