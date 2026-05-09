@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Employee Workload Tracking — UME Shipping Group</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
     --navy: #0f2d4a;
     --navy-mid: #1b4872;
+    --navy-lt: #e8f0f8;
     --teal: #0d7377;
     --teal-lt: #e8f6f7;
     --accent: #c8a96e;
@@ -32,9 +33,10 @@
     --weekly-lt: #e8f5e9;
     --monthly: #6a1b9a;
     --monthly-lt: #f3e5f5;
-    --radius: 10px;
-    --shadow: 0 2px 16px rgba(15,45,74,0.09);
-    --shadow-sm: 0 1px 6px rgba(15,45,74,0.06);
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(15,45,74,0.10);
+    --shadow-sm: 0 1px 8px rgba(15,45,74,0.07);
+    --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
   }
 
   body {
@@ -45,207 +47,246 @@
     line-height: 1.6;
   }
 
-  /* ── Header ── */
+  /* === HEADER === */
   .site-header {
     background: var(--navy);
-    padding: 0;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 200;
     border-bottom: 3px solid var(--accent);
   }
   .header-inner {
-    max-width: 900px;
+    max-width: 860px;
     margin: 0 auto;
-    padding: 18px 24px;
+    padding: 14px 24px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
   }
   .logo-mark {
-    width: 40px; height: 40px;
+    width: 38px; height: 38px;
     background: var(--accent);
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     font-family: 'DM Serif Display', serif;
-    font-size: 18px;
+    font-size: 17px;
     color: var(--navy);
-    font-weight: 400;
     flex-shrink: 0;
   }
-  .header-text h1 {
-    font-size: 15px;
-    font-weight: 600;
-    color: #ffffff;
-    letter-spacing: 0.01em;
-  }
-  .header-text p {
-    font-size: 12px;
-    color: rgba(255,255,255,0.55);
-    font-weight: 300;
-  }
+  .header-text h1 { font-size: 14px; font-weight: 600; color: #fff; letter-spacing: 0.01em; }
+  .header-text p  { font-size: 11px; color: rgba(255,255,255,0.5); font-weight: 300; }
   .header-badge {
     margin-left: auto;
     background: rgba(200,169,110,0.15);
     border: 1px solid rgba(200,169,110,0.3);
     color: var(--accent);
-    font-size: 11px;
-    font-weight: 500;
-    padding: 4px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
     border-radius: 20px;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 
-  /* ── Progress bar ── */
-  .progress-bar-wrap {
-    background: rgba(0,0,0,0.25);
-    height: 3px;
+  /* === STEP PROGRESS NAV === */
+  .step-nav-wrap {
+    background: var(--navy-mid);
+    padding: 0 24px;
   }
-  .progress-bar-fill {
+  .step-nav {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: stretch;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .step-nav::-webkit-scrollbar { display: none; }
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    opacity: 0.5;
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .step-item.active {
+    opacity: 1;
+    color: #fff;
+    border-bottom-color: var(--accent);
+  }
+  .step-item.completed {
+    opacity: 0.85;
+    color: rgba(255,255,255,0.8);
+  }
+  .step-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .step-item.active .step-dot {
+    background: var(--accent);
+    color: var(--navy);
+  }
+  .step-item.completed .step-dot {
+    background: var(--success);
+    color: #fff;
+  }
+
+  /* Progress thin bar */
+  .progress-thin {
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+  }
+  .progress-thin-fill {
     height: 100%;
     background: var(--accent);
-    transition: width 0.4s ease;
+    transition: width 0.5s ease;
     width: 0%;
   }
 
-  /* ── Main layout ── */
+  /* === MAIN LAYOUT === */
   .main-wrap {
-    max-width: 900px;
+    max-width: 860px;
     margin: 0 auto;
-    padding: 36px 24px 80px;
+    padding: 32px 24px 100px;
   }
 
-  /* ── Form intro ── */
-  .form-intro {
+  /* === SECTION PANELS === */
+  .section-panel {
+    display: none;
+    animation: panelIn 0.4s ease forwards;
+  }
+  .section-panel.active { display: block; }
+  @keyframes panelIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* === SECTION HEADER CARD === */
+  .section-head-card {
     background: var(--navy);
     border-radius: var(--radius);
-    padding: 32px 36px;
-    margin-bottom: 28px;
+    padding: 28px 32px 24px;
+    margin-bottom: 24px;
     position: relative;
     overflow: hidden;
   }
-  .form-intro::before {
+  .section-head-card::after {
     content: '';
     position: absolute;
-    right: -30px; top: -30px;
-    width: 200px; height: 200px;
+    right: -40px; top: -40px;
+    width: 180px; height: 180px;
     border-radius: 50%;
-    background: rgba(200,169,110,0.08);
+    background: rgba(200,169,110,0.07);
+    pointer-events: none;
   }
-  .form-intro h2 {
+  .section-head-card.daily-theme  { background: linear-gradient(135deg, #0f2d4a 0%, #1565c0 100%); }
+  .section-head-card.weekly-theme { background: linear-gradient(135deg, #0f2d4a 0%, #2e7d32 100%); }
+  .section-head-card.monthly-theme{ background: linear-gradient(135deg, #0f2d4a 0%, #6a1b9a 100%); }
+  .section-head-card.assess-theme { background: linear-gradient(135deg, #0f2d4a 0%, #7a5200 100%); }
+  .section-step-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .section-head-card h2 {
     font-family: 'DM Serif Display', serif;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: 400;
     color: #fff;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
-  .form-intro p {
-    font-size: 14px;
-    color: rgba(255,255,255,0.6);
-    max-width: 560px;
+  .section-head-card p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.55);
     font-weight: 300;
     line-height: 1.7;
+    max-width: 520px;
   }
-  .intro-tags {
-    display: flex;
-    gap: 8px;
-    margin-top: 16px;
-    flex-wrap: wrap;
+  .section-head-tags {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px;
   }
-  .intro-tag {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 4px 10px;
+  .s-tag {
+    font-size: 11px; font-weight: 500;
+    padding: 3px 10px;
     border-radius: 20px;
     letter-spacing: 0.02em;
   }
-  .intro-tag.daily   { background: rgba(21,101,192,0.25); color: #90caf9; }
-  .intro-tag.weekly  { background: rgba(46,125,50,0.25);  color: #a5d6a7; }
-  .intro-tag.monthly { background: rgba(106,27,154,0.25); color: #ce93d8; }
-  .intro-tag.assess  { background: rgba(200,169,110,0.2); color: var(--accent); }
+  .s-tag.navy   { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.75); }
+  .s-tag.gold   { background: rgba(200,169,110,0.2);  color: var(--accent); }
+  .s-tag.blue   { background: rgba(21,101,192,0.25);  color: #90caf9; }
+  .s-tag.green  { background: rgba(46,125,50,0.25);   color: #a5d6a7; }
+  .s-tag.purple { background: rgba(106,27,154,0.25);  color: #ce93d8; }
 
-  /* ── Section card ── */
-  .section-card {
+  /* === FORM CARD === */
+  .form-card {
     background: var(--surface);
     border-radius: var(--radius);
     border: 1px solid var(--border);
     box-shadow: var(--shadow-sm);
+    padding: 28px;
     margin-bottom: 20px;
-    overflow: hidden;
   }
-  .section-header {
-    padding: 18px 24px;
+  .form-card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-mid);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
-    gap: 14px;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.15s;
+    gap: 8px;
   }
-  .section-header:hover { background: var(--bg); }
-  .section-icon {
-    width: 38px; height: 38px;
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 17px;
+  .form-card-title-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
     flex-shrink: 0;
   }
-  .section-icon.emp   { background: #e8f0fd; color: var(--daily); }
-  .section-icon.daily { background: var(--daily-lt); color: var(--daily); }
-  .section-icon.weekly{ background: var(--weekly-lt); color: var(--weekly); }
-  .section-icon.monthly{ background: var(--monthly-lt); color: var(--monthly); }
-  .section-icon.assess{ background: var(--accent-lt); color: #8a6200; }
-  .section-title-wrap { flex: 1; }
-  .section-title {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .section-subtitle {
-    font-size: 12px;
-    color: var(--text-lt);
-    margin-top: 2px;
-  }
-  .section-chevron {
-    font-size: 18px;
-    color: var(--text-lt);
-    transition: transform 0.3s ease;
-  }
-  .section-card.open .section-chevron { transform: rotate(180deg); }
-  .section-body {
-    display: none;
-    border-top: 1px solid var(--border);
-    padding: 24px;
-  }
-  .section-card.open .section-body { display: block; }
 
-  /* ── Form fields ── */
+  /* === FIELD GRID === */
   .field-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 18px;
   }
   .field-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
   .field-grid.full   { grid-template-columns: 1fr; }
-  @media(max-width: 620px) {
+  @media(max-width: 640px) {
     .field-grid, .field-grid.cols-3 { grid-template-columns: 1fr; }
   }
-
   .field-group { display: flex; flex-direction: column; gap: 6px; }
   .field-group.span-2 { grid-column: span 2; }
-  @media(max-width: 620px) { .field-group.span-2 { grid-column: span 1; } }
+  @media(max-width: 640px) { .field-group.span-2 { grid-column: span 1; } }
 
   label {
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     color: var(--text-mid);
-    letter-spacing: 0.03em;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
   label .req { color: var(--danger); margin-left: 2px; }
 
-  input[type=text], input[type=date], input[type=number],
-  select, textarea {
+  input[type=text], input[type=date], input[type=number], select, textarea {
     font-family: 'DM Sans', sans-serif;
     font-size: 14px;
     color: var(--text);
@@ -253,7 +294,7 @@
     border: 1.5px solid var(--border);
     border-radius: 8px;
     padding: 10px 14px;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
     outline: none;
     width: 100%;
   }
@@ -263,28 +304,94 @@
     box-shadow: 0 0 0 3px rgba(27,72,114,0.1);
   }
   input.invalid, select.invalid, textarea.invalid {
-    border-color: var(--danger);
-    background: var(--danger-lt);
+    border-color: var(--danger) !important;
+    background: var(--danger-lt) !important;
+    animation: shake 0.4s ease;
   }
-  textarea { resize: vertical; min-height: 80px; }
+  @keyframes shake {
+    0%,100%{ transform: translateX(0); }
+    20%{ transform: translateX(-5px); }
+    40%{ transform: translateX(5px); }
+    60%{ transform: translateX(-3px); }
+    80%{ transform: translateX(3px); }
+  }
+  textarea { resize: vertical; min-height: 85px; }
 
-  .field-hint {
+  .field-hint { font-size: 11px; color: var(--text-lt); }
+  .field-error {
     font-size: 11px;
-    color: var(--text-lt);
-    margin-top: 2px;
+    color: var(--danger);
+    font-weight: 500;
+    display: none;
   }
+  .field-group.has-error .field-error { display: block; }
 
-  /* ── Task block ── */
+  /* === TENURE DISPLAY === */
+  .tenure-badge {
+    display: none;
+    margin-top: 6px;
+    background: var(--daily-lt);
+    border: 1px solid #b3cff7;
+    border-radius: 7px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: var(--daily);
+    font-weight: 600;
+    align-items: center;
+    gap: 6px;
+  }
+  .tenure-badge.show { display: flex; }
+
+  /* === VALIDATION SUMMARY === */
+  .val-summary {
+    display: none;
+    background: var(--danger-lt);
+    border: 1.5px solid #f5c6c2;
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    animation: panelIn 0.3s ease;
+  }
+  .val-summary.show { display: block; }
+  .val-summary-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--danger);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .val-summary ul {
+    list-style: none;
+    padding: 0;
+  }
+  .val-summary ul li {
+    font-size: 13px;
+    color: var(--danger);
+    padding: 3px 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .val-summary ul li:hover { text-decoration: underline; }
+  .val-summary ul li::before { content: '→'; font-weight: 700; }
+
+  /* === TASK BLOCK === */
   .task-block {
     border: 1.5px solid var(--border);
     border-radius: var(--radius);
     padding: 18px 20px;
     margin-bottom: 14px;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     position: relative;
+    background: var(--surface);
   }
-  .task-block:focus-within { border-color: var(--navy-mid); }
-
+  .task-block:focus-within {
+    border-color: var(--navy-mid);
+    box-shadow: 0 0 0 3px rgba(27,72,114,0.06);
+  }
   .task-block-header {
     display: flex;
     align-items: center;
@@ -292,18 +399,17 @@
     margin-bottom: 16px;
   }
   .task-num {
-    width: 28px; height: 28px;
+    width: 26px; height: 26px;
     border-radius: 6px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     color: #fff;
     flex-shrink: 0;
   }
   .task-num.daily-num   { background: var(--daily); }
   .task-num.weekly-num  { background: var(--weekly); }
   .task-num.monthly-num { background: var(--monthly); }
-
   .task-label-input {
     flex: 1;
     font-size: 14px;
@@ -325,28 +431,19 @@
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 17px;
     color: var(--text-lt);
-    padding: 4px;
-    border-radius: 4px;
+    padding: 4px 6px;
+    border-radius: 6px;
     transition: color 0.15s, background 0.15s;
     line-height: 1;
   }
   .task-remove:hover { color: var(--danger); background: var(--danger-lt); }
-
   .task-fields { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
   @media(max-width: 620px) { .task-fields { grid-template-columns: 1fr 1fr; } }
-
   .task-note { grid-column: span 3; }
   @media(max-width: 620px) { .task-note { grid-column: span 2; } }
 
-  /* ── Priority badges ── */
-  select.priority option[value="Critical"] { color: #c0392b; }
-  select.priority option[value="High"]     { color: #e67e22; }
-  select.priority option[value="Medium"]   { color: #f39c12; }
-  select.priority option[value="Low"]      { color: #27ae60; }
-
-  /* ── Add task button ── */
   .add-task-btn {
     display: flex;
     align-items: center;
@@ -362,7 +459,6 @@
     color: var(--text-mid);
     cursor: pointer;
     transition: all 0.2s;
-    margin-top: 4px;
   }
   .add-task-btn:hover {
     border-color: var(--navy-mid);
@@ -370,143 +466,219 @@
     background: #f0f5ff;
   }
 
-  /* ── Rating scale ── */
-  .rating-wrap {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 4px;
-  }
+  /* === RATING === */
+  .rating-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
   .rating-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
     background: var(--bg);
     border: 1.5px solid var(--border);
     border-radius: 8px;
     padding: 10px 14px;
     cursor: pointer;
     transition: all 0.15s;
-    min-width: 58px;
+    min-width: 56px;
     font-family: 'DM Sans', sans-serif;
   }
   .rating-btn:hover { border-color: var(--navy-mid); background: #eef3fb; }
-  .rating-btn.selected {
-    background: var(--navy);
-    border-color: var(--navy);
-    color: #fff;
-  }
-  .rating-num { font-size: 18px; font-weight: 600; }
-  .rating-lbl { font-size: 10px; color: inherit; opacity: 0.7; white-space: nowrap; }
+  .rating-btn.selected { background: var(--navy); border-color: var(--navy); color: #fff; }
+  .rating-num { font-size: 18px; font-weight: 700; }
+  .rating-lbl { font-size: 10px; opacity: 0.7; white-space: nowrap; }
 
-  /* ── Divider ── */
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 20px 0;
-  }
-
-  /* ── Section color accents ── */
-  .accent-daily   { border-left: 4px solid var(--daily); }
-  .accent-weekly  { border-left: 4px solid var(--weekly); }
-  .accent-monthly { border-left: 4px solid var(--monthly); }
-  .accent-assess  { border-left: 4px solid var(--accent); }
-
-  /* ── Submit area ── */
-  .submit-area {
+  /* === NAVIGATION BUTTONS === */
+  .nav-bar {
     background: var(--surface);
-    border-radius: var(--radius);
     border: 1px solid var(--border);
-    padding: 28px 32px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 18px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-    box-shadow: var(--shadow);
+    gap: 12px;
+    margin-top: 8px;
   }
-  .submit-info p { font-size: 13px; color: var(--text-mid); }
-  .submit-info strong { color: var(--text); font-weight: 600; }
-  .submit-btn {
+  .nav-bar-left { display: flex; align-items: center; gap: 10px; }
+  .btn-back {
+    background: none;
+    border: 1.5px solid var(--border);
+    color: var(--text-mid);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .btn-back:hover { border-color: var(--navy-mid); color: var(--navy); background: var(--navy-lt); }
+  .btn-next {
     background: var(--navy);
     color: #fff;
     border: none;
     border-radius: 8px;
-    padding: 13px 32px;
+    padding: 11px 26px;
     font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s, transform 0.1s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display: flex; align-items: center; gap: 8px;
     letter-spacing: 0.01em;
   }
-  .submit-btn:hover { background: var(--navy-mid); }
-  .submit-btn:active { transform: scale(0.98); }
-  .submit-btn:disabled { background: var(--text-lt); cursor: not-allowed; }
+  .btn-next:hover { background: var(--navy-mid); }
+  .btn-next:active { transform: scale(0.98); }
+  .btn-submit {
+    background: var(--teal);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 28px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: flex; align-items: center; gap: 8px;
+    letter-spacing: 0.01em;
+  }
+  .btn-submit:hover { background: var(--teal); filter: brightness(1.1); }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled { background: var(--text-lt); cursor: not-allowed; }
+  .nav-step-info {
+    font-size: 12px;
+    color: var(--text-lt);
+    font-weight: 500;
+  }
 
-  /* ── Toast / Success ── */
+  /* === TOAST === */
   .toast {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    bottom: 24px; right: 24px;
     background: var(--success);
     color: #fff;
     padding: 14px 20px;
     border-radius: var(--radius);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     transform: translateY(80px);
     opacity: 0;
     transition: all 0.35s ease;
     z-index: 999;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex; align-items: center; gap: 10px;
+    max-width: 340px;
   }
   .toast.show { transform: translateY(0); opacity: 1; }
 
-  .success-screen {
-    display: none;
-    text-align: center;
-    padding: 60px 24px;
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-  }
-  .success-screen.show { display: block; }
-  .success-icon {
-    width: 72px; height: 72px;
-    background: var(--success-lt);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 32px;
-    margin: 0 auto 20px;
-  }
-  .success-screen h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    color: var(--text);
-    margin-bottom: 10px;
-    font-weight: 400;
-  }
-  .success-screen p { color: var(--text-mid); font-size: 15px; }
+  /* === DIVIDER === */
+  .divider { height: 1px; background: var(--border); margin: 22px 0; }
 
-  /* ── Spinner ── */
+  /* === SPINNER === */
   @keyframes spin { to { transform: rotate(360deg); } }
   .spinner {
-    width: 18px; height: 18px;
+    width: 17px; height: 17px;
     border: 2px solid rgba(255,255,255,0.3);
     border-top-color: #fff;
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
   }
 
-  .required-note {
+  /* === THANK YOU / SUCCESS === */
+  .thank-you-panel {
+    display: none;
+    text-align: center;
+    padding: 64px 32px 48px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    animation: panelIn 0.5s ease forwards;
+  }
+  .thank-you-panel.show { display: block; }
+  .ty-icon {
+    width: 80px; height: 80px;
+    background: var(--success-lt);
+    border: 3px solid #b7dfcb;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 34px;
+    margin: 0 auto 24px;
+  }
+  .thank-you-panel h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .thank-you-panel .ty-sub {
+    font-size: 15px;
+    color: var(--text-mid);
+    max-width: 480px;
+    margin: 0 auto 8px;
+    line-height: 1.7;
+  }
+  .thank-you-panel .ty-ref {
+    font-size: 12px;
+    color: var(--text-lt);
+    margin-top: 6px;
+    margin-bottom: 28px;
+  }
+  .ty-divider {
+    height: 1px;
+    background: var(--border);
+    max-width: 300px;
+    margin: 24px auto;
+  }
+  .ty-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .ty-btn {
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+  }
+  .ty-btn-primary { background: var(--navy); color: #fff; }
+  .ty-btn-primary:hover { background: var(--navy-mid); }
+  .ty-btn-secondary { background: var(--bg); color: var(--text-mid); border: 1.5px solid var(--border); }
+  .ty-btn-secondary:hover { background: var(--navy-lt); color: var(--navy); }
+
+  /* === INFO STRIP === */
+  .info-strip {
+    background: var(--accent-lt);
+    border: 1px solid #f0d9a8;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #7a5200;
+    font-weight: 500;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  /* === COMPLETION BADGE === */
+  .section-complete-badge {
+    display: none;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--success);
+    background: var(--success-lt);
+    padding: 3px 10px;
+    border-radius: 20px;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+  }
+
+  /* === REQUIRED NOTE === */
+  .req-note {
     font-size: 12px;
     color: var(--text-lt);
     margin-bottom: 20px;
@@ -515,6 +687,7 @@
 </head>
 <body>
 
+<!-- HEADER -->
 <header class="site-header">
   <div class="header-inner">
     <div class="logo-mark">U</div>
@@ -524,247 +697,668 @@
     </div>
     <div class="header-badge">Confidential</div>
   </div>
-  <div class="progress-bar-wrap">
-    <div class="progress-bar-fill" id="progressBar"></div>
-  </div>
+  <div class="progress-thin"><div class="progress-thin-fill" id="progressBar"></div></div>
 </header>
+
+<!-- STEP NAV -->
+<div class="step-nav-wrap">
+  <nav class="step-nav" id="stepNav">
+    <div class="step-item active" id="nav-0" onclick="goToStep(0)"><span class="step-dot">1</span>Welcome</div>
+    <div class="step-item" id="nav-1" onclick="goToStep(1)"><span class="step-dot">2</span>Personal Info</div>
+    <div class="step-item" id="nav-2" onclick="goToStep(2)"><span class="step-dot">3</span>Daily Tasks</div>
+    <div class="step-item" id="nav-3" onclick="goToStep(3)"><span class="step-dot">4</span>Weekly Tasks</div>
+    <div class="step-item" id="nav-4" onclick="goToStep(4)"><span class="step-dot">5</span>Monthly Tasks</div>
+    <div class="step-item" id="nav-5" onclick="goToStep(5)"><span class="step-dot">6</span>Assessment</div>
+  </nav>
+</div>
 
 <div class="main-wrap">
 
-  <div class="form-intro">
-    <h2>Employee Workload Tracking Form</h2>
-    <p>Please complete all sections accurately. This form enables management to evaluate workload distribution, task allocation efficiency, and individual performance. Submit at the end of each reporting period.</p>
-    <div class="intro-tags">
-      <span class="intro-tag daily">📅 Daily Tasks</span>
-      <span class="intro-tag weekly">📆 Weekly Tasks</span>
-      <span class="intro-tag monthly">🗓 Monthly Tasks</span>
-      <span class="intro-tag assess">📊 Assessment</span>
+  <!-- ===============================================================
+       STEP 0 — WELCOME
+  =============================================================== -->
+  <div class="section-panel active" id="panel-0">
+    <div class="section-head-card">
+      <div class="section-step-label">UME Shipping Group — HR &amp; Operations</div>
+      <h2>Employee Workload Tracking Form</h2>
+      <p>This form is designed to provide management with an accurate, structured view of your day-to-day responsibilities, task distribution, and overall workload balance. Your input directly informs resource planning and performance reviews.</p>
+      <div class="section-head-tags">
+        <span class="s-tag gold">Confidential</span>
+        <span class="s-tag navy">Reporting Period: Current Cycle</span>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-title"><span class="form-card-title-dot"></span>How to Complete This Form</div>
+      <div style="display:grid;gap:14px;">
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:8px;background:var(--navy-lt);color:var(--navy);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">1</div>
+          <div><div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Complete Your Personal Information</div><div style="font-size:13px;color:var(--text-mid);">Fill in your name, title, branch, and reporting period. All starred fields are mandatory.</div></div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:8px;background:var(--daily-lt);color:var(--daily);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">2</div>
+          <div><div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Log Your Tasks by Frequency</div><div style="font-size:13px;color:var(--text-mid);">Enter each task under Daily, Weekly, or Monthly sections with estimated effort, priority, and percentage of your workload.</div></div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="width:32px;height:32px;border-radius:8px;background:var(--success-lt);color:var(--success);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">3</div>
+          <div><div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px;">Submit Your Workload Assessment</div><div style="font-size:13px;color:var(--text-mid);">Rate your overall workload, flag any unlisted tasks, and submit. Your manager will review the report within 2 working days.</div></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+        <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
+          <div style="font-size:22px;margin-bottom:6px;">📅</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;">Daily Tasks</div>
+          <div style="font-size:11px;color:var(--text-lt);">Recurring every work day</div>
+        </div>
+        <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
+          <div style="font-size:22px;margin-bottom:6px;">📆</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;">Weekly Tasks</div>
+          <div style="font-size:11px;color:var(--text-lt);">Scheduled weekly duties</div>
+        </div>
+        <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
+          <div style="font-size:22px;margin-bottom:6px;">🗓️</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;">Monthly Tasks</div>
+          <div style="font-size:11px;color:var(--text-lt);">Periodic or cycle-based work</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-strip">
+      ⚠️ <span>All responses are strictly confidential and used solely for internal HR and operational planning purposes. Do not share this form link with external parties.</span>
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-bar-left">
+        <span class="nav-step-info">Step 1 of 6</span>
+      </div>
+      <button class="btn-next" onclick="nextStep()">Begin Form &nbsp;→</button>
     </div>
   </div>
 
-  <p class="required-note">Fields marked with <span style="color:var(--danger)">*</span> are required.</p>
-
-  <form id="workloadForm" novalidate>
-
-    <!-- ── SECTION 1: Employee Information ── -->
-    <div class="section-card open accent-daily" id="sec-emp">
-      <div class="section-header" onclick="toggleSection('sec-emp')">
-        <div class="section-icon emp">👤</div>
-        <div class="section-title-wrap">
-          <div class="section-title">Section 1 — Employee Information</div>
-          <div class="section-subtitle">Personal details, branch, and role identification</div>
-        </div>
-        <span class="section-chevron">▾</span>
+  <!-- ===============================================================
+       STEP 1 — PERSONAL INFORMATION
+  =============================================================== -->
+  <div class="section-panel" id="panel-1">
+    <div class="section-head-card">
+      <div class="section-step-label">Step 2 of 6</div>
+      <h2>Personal Information</h2>
+      <p>Please provide accurate details for identification and routing purposes. All required fields must be completed before proceeding.</p>
+      <div class="section-head-tags">
+        <span class="s-tag navy">Required Section</span>
+        <span class="s-tag gold">All starred fields are mandatory</span>
       </div>
-      <div class="section-body">
-        <div class="field-grid">
-          <div class="field-group">
-            <label>Full Name <span class="req">*</span></label>
-            <input type="text" id="fullName" placeholder="e.g. Mohamed Ahmed El-Sayed" required>
-          </div>
-          <div class="field-group">
-            <label>Job Title <span class="req">*</span></label>
-            <select id="jobTitle">
-              <option value="">— Select Job Title —</option>
-              <option>Accountant</option>
-              <option>Senior Accountant</option>
-              <option>SV Accountant</option>
-              <option>Section Head</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>Employment Start Date</label>
-            <input type="date" id="startDate" onchange="calcTenure()">
-            <div id="tenureDisplay" style="margin-top:6px;display:none;background:var(--daily-lt);border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--daily);font-weight:600;">
-              ⏱ <span id="tenureText"></span>
-            </div>
-          </div>
-          <div class="field-group">
-            <label>Branch Name <span class="req">*</span></label>
-            <select id="department">
-              <option value="">— Select Branch —</option>
-              <option>CAI</option>
-              <option>Suez</option>
-              <option>PSD</option>
-              <option>Safaga</option>
-              <option>Alex</option>
-              <option>Sokhna</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>Team Role <span class="req">*</span></label>
-            <select id="teamRole">
-              <option value="">— Select Role —</option>
-              <option>Casher</option>
-              <option>Gen Accountant</option>
-              <option>Payable Accountant</option>
-              <option>Receivable Accountant</option>
-              <option>Tax</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>Direct Manager <span class="req">*</span></label>
-            <input type="text" id="manager" placeholder="e.g. Mostafa Abdelrahman">
-          </div>
-          <div class="field-group">
-            <label>Employee ID <span style="font-weight:400;text-transform:none;color:var(--text-lt)">(optional)</span></label>
-            <input type="text" id="empId" placeholder="e.g. EMP-0042">
-          </div>
-          <div class="field-group">
-            <label>Report Period <span class="req">*</span></label>
-            <input type="text" id="period" placeholder="e.g. May 2026 / W18 2026">
-          </div>
+    </div>
+
+    <!-- Validation Summary (shown on error) -->
+    <div class="val-summary" id="valSummary">
+      <div class="val-summary-title">⚠ Please complete the following required fields:</div>
+      <ul id="valList"></ul>
+    </div>
+
+    <p class="req-note">Fields marked with <span style="color:var(--danger)">*</span> are required.</p>
+
+    <div class="form-card">
+      <div class="form-card-title"><span class="form-card-title-dot"></span>Employee Identification</div>
+      <div class="field-grid">
+        <div class="field-group" id="fg-fullName">
+          <label>Full Name <span class="req">*</span></label>
+          <input type="text" id="fullName" placeholder="e.g. Mohamed Ahmed El-Sayed" autocomplete="name">
+          <span class="field-error" id="err-fullName">Full name is required.</span>
+        </div>
+        <div class="field-group" id="fg-jobTitle">
+          <label>Job Title <span class="req">*</span></label>
+          <select id="jobTitle">
+            <option value="">— Select Job Title —</option>
+            <option>Accountant</option>
+            <option>Senior Accountant</option>
+            <option>SV Accountant</option>
+            <option>Section Head</option>
+          </select>
+          <span class="field-error" id="err-jobTitle">Job title is required.</span>
+        </div>
+        <div class="field-group" id="fg-department">
+          <label>Branch Name <span class="req">*</span></label>
+          <select id="department">
+            <option value="">— Select Branch —</option>
+            <option>CAI</option>
+            <option>Suez</option>
+            <option>PSD</option>
+            <option>Safaga</option>
+            <option>Alex</option>
+            <option>Sokhna</option>
+          </select>
+          <span class="field-error" id="err-department">Branch name is required.</span>
+        </div>
+        <div class="field-group" id="fg-teamRole">
+          <label>Team Role <span class="req">*</span></label>
+          <select id="teamRole">
+            <option value="">— Select Role —</option>
+            <option>Casher</option>
+            <option>Gen Accountant</option>
+            <option>Payable Accountant</option>
+            <option>Receivable Accountant</option>
+            <option>Tax</option>
+          </select>
+          <span class="field-error" id="err-teamRole">Team role is required.</span>
+        </div>
+        <div class="field-group" id="fg-manager">
+          <label>Direct Manager <span class="req">*</span></label>
+          <input type="text" id="manager" placeholder="e.g. Mostafa Abdelrahman">
+          <span class="field-error" id="err-manager">Manager name is required.</span>
+        </div>
+        <div class="field-group">
+          <label>Employee ID <span style="font-weight:400;text-transform:none;color:var(--text-lt);font-size:10px">(optional)</span></label>
+          <input type="text" id="empId" placeholder="e.g. EMP-0042">
         </div>
       </div>
     </div>
 
-    <!-- ── SECTION 2: Daily Tasks ── -->
-    <div class="section-card open accent-daily" id="sec-daily">
-      <div class="section-header" onclick="toggleSection('sec-daily')">
-        <div class="section-icon daily">📅</div>
-        <div class="section-title-wrap">
-          <div class="section-title">Section 2 — Daily Tasks</div>
-          <div class="section-subtitle">Tasks performed every working day</div>
+    <div class="form-card">
+      <div class="form-card-title"><span class="form-card-title-dot"></span>Employment &amp; Reporting Period</div>
+      <div class="field-grid">
+        <div class="field-group">
+          <label>Employment Start Date</label>
+          <input type="date" id="startDate" onchange="calcTenure()">
+          <div class="tenure-badge" id="tenureDisplay">
+            <span>⏱</span><span id="tenureText"></span>
+          </div>
+          <span class="field-hint">Calculates your service period automatically.</span>
         </div>
-        <span class="section-chevron">▾</span>
-      </div>
-      <div class="section-body">
-        <div id="dailyTasksContainer"></div>
-        <button type="button" class="add-task-btn" onclick="addTask('daily')">
-          ＋ Add Daily Task
-        </button>
-      </div>
-    </div>
-
-    <!-- ── SECTION 3: Weekly Tasks ── -->
-    <div class="section-card accent-weekly" id="sec-weekly">
-      <div class="section-header" onclick="toggleSection('sec-weekly')">
-        <div class="section-icon weekly">📆</div>
-        <div class="section-title-wrap">
-          <div class="section-title">Section 3 — Weekly Tasks</div>
-          <div class="section-subtitle">Tasks performed on a recurring weekly basis</div>
-        </div>
-        <span class="section-chevron">▾</span>
-      </div>
-      <div class="section-body">
-        <div id="weeklyTasksContainer"></div>
-        <button type="button" class="add-task-btn" onclick="addTask('weekly')">
-          ＋ Add Weekly Task
-        </button>
-      </div>
-    </div>
-
-    <!-- ── SECTION 4: Monthly Tasks ── -->
-    <div class="section-card accent-monthly" id="sec-monthly">
-      <div class="section-header" onclick="toggleSection('sec-monthly')">
-        <div class="section-icon monthly">🗓</div>
-        <div class="section-title-wrap">
-          <div class="section-title">Section 4 — Monthly Tasks</div>
-          <div class="section-subtitle">Recurring tasks on a monthly or periodic cycle</div>
-        </div>
-        <span class="section-chevron">▾</span>
-      </div>
-      <div class="section-body">
-        <div id="monthlyTasksContainer"></div>
-        <button type="button" class="add-task-btn" onclick="addTask('monthly')">
-          ＋ Add Monthly Task
-        </button>
-      </div>
-    </div>
-
-    <!-- ── SECTION 5: Assessment ── -->
-    <div class="section-card accent-assess" id="sec-assess">
-      <div class="section-header" onclick="toggleSection('sec-assess')">
-        <div class="section-icon assess">📊</div>
-        <div class="section-title-wrap">
-          <div class="section-title">Section 5 — Overall Workload Assessment</div>
-          <div class="section-subtitle">Self-evaluation and management feedback</div>
-        </div>
-        <span class="section-chevron">▾</span>
-      </div>
-      <div class="section-body">
-        <div class="field-grid full">
-          <div class="field-group">
-            <label>Overall Workload Rating <span class="req">*</span></label>
-            <p class="field-hint" style="margin-bottom:10px">1 = Very underutilized &nbsp;&nbsp;·&nbsp;&nbsp; 5 = Severely overloaded</p>
-            <div class="rating-wrap" id="ratingWrap">
-              <button type="button" class="rating-btn" onclick="setRating(1)"><span class="rating-num">1</span><span class="rating-lbl">Very low</span></button>
-              <button type="button" class="rating-btn" onclick="setRating(2)"><span class="rating-num">2</span><span class="rating-lbl">Low</span></button>
-              <button type="button" class="rating-btn" onclick="setRating(3)"><span class="rating-num">3</span><span class="rating-lbl">Balanced</span></button>
-              <button type="button" class="rating-btn" onclick="setRating(4)"><span class="rating-num">4</span><span class="rating-lbl">High</span></button>
-              <button type="button" class="rating-btn" onclick="setRating(5)"><span class="rating-num">5</span><span class="rating-lbl">Overloaded</span></button>
-            </div>
-            <input type="hidden" id="workloadRating" value="">
-          </div>
-          <div class="divider"></div>
-          <div class="field-group">
-            <label>Are your tasks clearly defined and prioritized? <span class="req">*</span></label>
-            <select id="taskClarity">
-              <option value="">— Select —</option>
-              <option>Yes, very clearly</option><option>Mostly yes</option>
-              <option>Somewhat</option><option>Not really</option><option>No, it is unclear</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>Are there significant unlisted tasks? <span class="req">*</span></label>
-            <select id="unlistedTasks">
-              <option value="">— Select —</option>
-              <option>No, the list above is complete</option>
-              <option>Yes, minor unlisted tasks</option>
-              <option>Yes, significant unlisted tasks</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>Biggest Workload Challenge <span class="req">*</span></label>
-            <select id="challenge">
-              <option value="">— Select —</option>
-              <option>Too many tasks, not enough time</option>
-              <option>Tasks are unclear or poorly defined</option>
-              <option>Dependency on other team members</option>
-              <option>Lack of tools or resources</option>
-              <option>Repetitive low-value tasks</option>
-              <option>No major challenge at the moment</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>Additional Comments or Suggestions</label>
-            <textarea id="comments" placeholder="Any feedback regarding workload, tools, processes, or team structure…"></textarea>
-          </div>
+        <div class="field-group" id="fg-period">
+          <label>Report Period <span class="req">*</span></label>
+          <input type="text" id="period" placeholder="e.g. May 2026 / W20 2026">
+          <span class="field-error" id="err-period">Reporting period is required.</span>
+          <span class="field-hint">Specify the month, week number, or cycle this report covers.</span>
         </div>
       </div>
     </div>
 
-    <!-- ── Submit ── -->
-    <div class="submit-area">
-      <div class="submit-info">
-        <p><strong>Ready to submit?</strong></p>
-        <p>Your response will be saved to the team's Google Sheet and reviewed by your manager within 2 working days.</p>
+    <div class="nav-bar">
+      <div class="nav-bar-left">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <span class="nav-step-info">Step 2 of 6</span>
       </div>
-      <button type="submit" class="submit-btn" id="submitBtn">
+      <button class="btn-next" onclick="validateAndNext()">Save &amp; Continue →</button>
+    </div>
+  </div>
+
+  <!-- ===============================================================
+       STEP 2 — DAILY TASKS
+  =============================================================== -->
+  <div class="section-panel" id="panel-2">
+    <div class="section-head-card daily-theme">
+      <div class="section-step-label">Step 3 of 6</div>
+      <h2>Daily Tasks</h2>
+      <p>List all tasks you perform on every working day. For each task, specify the category, estimated time, priority level, and percentage of your total daily workload it represents.</p>
+      <div class="section-head-tags">
+        <span class="s-tag blue">Recurring Daily</span>
+        <span class="s-tag navy">Add one row per distinct task</span>
+      </div>
+    </div>
+
+    <div class="info-strip">
+      💡 <span>Be specific — enter each task as a separate entry. This helps management accurately map workload distribution across the team.</span>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-title"><span class="form-card-title-dot" style="background:var(--daily)"></span>Daily Task Log</div>
+      <div id="dailyTasksContainer"></div>
+      <button type="button" class="add-task-btn" onclick="addTask('daily')">＋ &nbsp;Add Daily Task</button>
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-bar-left">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <span class="nav-step-info">Step 3 of 6</span>
+      </div>
+      <button class="btn-next" onclick="nextStep()">Continue to Weekly →</button>
+    </div>
+  </div>
+
+  <!-- ===============================================================
+       STEP 3 — WEEKLY TASKS
+  =============================================================== -->
+  <div class="section-panel" id="panel-3">
+    <div class="section-head-card weekly-theme">
+      <div class="section-step-label">Step 4 of 6</div>
+      <h2>Weekly Tasks</h2>
+      <p>List tasks that recur on a weekly basis or are scheduled at least once per week. Include meetings, reports, reviews, and any recurring weekly responsibilities.</p>
+      <div class="section-head-tags">
+        <span class="s-tag green">Weekly Recurring</span>
+        <span class="s-tag navy">Add one row per distinct task</span>
+      </div>
+    </div>
+
+    <div class="info-strip">
+      💡 <span>Include tasks such as team meetings, weekly reports, reconciliations, and supervisor briefings that happen on a weekly cycle.</span>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-title"><span class="form-card-title-dot" style="background:var(--weekly)"></span>Weekly Task Log</div>
+      <div id="weeklyTasksContainer"></div>
+      <button type="button" class="add-task-btn" onclick="addTask('weekly')">＋ &nbsp;Add Weekly Task</button>
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-bar-left">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <span class="nav-step-info">Step 4 of 6</span>
+      </div>
+      <button class="btn-next" onclick="nextStep()">Continue to Monthly →</button>
+    </div>
+  </div>
+
+  <!-- ===============================================================
+       STEP 4 — MONTHLY TASKS
+  =============================================================== -->
+  <div class="section-panel" id="panel-4">
+    <div class="section-head-card monthly-theme">
+      <div class="section-step-label">Step 5 of 6</div>
+      <h2>Monthly Tasks</h2>
+      <p>Document tasks that occur on a monthly, quarterly, or periodic cycle. This includes closing procedures, compliance filings, audits, and any tasks tied to monthly reporting cycles.</p>
+      <div class="section-head-tags">
+        <span class="s-tag purple">Monthly / Periodic</span>
+        <span class="s-tag navy">Add one row per distinct task</span>
+      </div>
+    </div>
+
+    <div class="info-strip">
+      💡 <span>Consider including month-end closings, payroll processing, variance reports, and any tasks that are tied to calendar cycles.</span>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-title"><span class="form-card-title-dot" style="background:var(--monthly)"></span>Monthly Task Log</div>
+      <div id="monthlyTasksContainer"></div>
+      <button type="button" class="add-task-btn" onclick="addTask('monthly')">＋ &nbsp;Add Monthly Task</button>
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-bar-left">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <span class="nav-step-info">Step 5 of 6</span>
+      </div>
+      <button class="btn-next" onclick="nextStep()">Continue to Assessment →</button>
+    </div>
+  </div>
+
+  <!-- ===============================================================
+       STEP 5 — ASSESSMENT
+  =============================================================== -->
+  <div class="section-panel" id="panel-5">
+    <div class="section-head-card assess-theme">
+      <div class="section-step-label">Step 6 of 6</div>
+      <h2>Workload Assessment</h2>
+      <p>Provide your honest self-evaluation of your current workload. This section allows management to identify resourcing gaps, prioritization issues, and opportunities for team optimization.</p>
+      <div class="section-head-tags">
+        <span class="s-tag gold">Self-Evaluation</span>
+        <span class="s-tag navy">All required fields must be completed</span>
+      </div>
+    </div>
+
+    <!-- Validation summary for assessment -->
+    <div class="val-summary" id="valSummaryAssess">
+      <div class="val-summary-title">⚠ Please complete the following required fields:</div>
+      <ul id="valListAssess"></ul>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-title"><span class="form-card-title-dot" style="background:var(--accent)"></span>Overall Workload Rating <span style="color:var(--danger);font-weight:700">*</span></div>
+      <p class="field-hint" style="margin-bottom:12px">Rate your overall workload level for this reporting period. &nbsp;1 = Very underutilized &nbsp;·&nbsp; 5 = Severely overloaded</p>
+      <div class="rating-wrap" id="ratingWrap">
+        <button type="button" class="rating-btn" onclick="setRating(1)"><span class="rating-num">1</span><span class="rating-lbl">Very Low</span></button>
+        <button type="button" class="rating-btn" onclick="setRating(2)"><span class="rating-num">2</span><span class="rating-lbl">Low</span></button>
+        <button type="button" class="rating-btn" onclick="setRating(3)"><span class="rating-num">3</span><span class="rating-lbl">Balanced</span></button>
+        <button type="button" class="rating-btn" onclick="setRating(4)"><span class="rating-num">4</span><span class="rating-lbl">High</span></button>
+        <button type="button" class="rating-btn" onclick="setRating(5)"><span class="rating-num">5</span><span class="rating-lbl">Overloaded</span></button>
+      </div>
+      <input type="hidden" id="workloadRating" value="">
+      <span class="field-error" id="err-rating" style="display:none;margin-top:6px;">Please select a workload rating.</span>
+    </div>
+
+    <div class="form-card">
+      <div class="form-card-title"><span class="form-card-title-dot" style="background:var(--accent)"></span>Evaluation Questions</div>
+      <div class="field-grid">
+        <div class="field-group" id="fg-taskClarity">
+          <label>Are your tasks clearly defined and prioritized? <span class="req">*</span></label>
+          <select id="taskClarity">
+            <option value="">— Select —</option>
+            <option>Yes, very clearly</option>
+            <option>Mostly yes</option>
+            <option>Somewhat</option>
+            <option>Not really</option>
+            <option>No, it is unclear</option>
+          </select>
+          <span class="field-error" id="err-taskClarity">This field is required.</span>
+        </div>
+        <div class="field-group" id="fg-unlistedTasks">
+          <label>Are there significant unlisted tasks? <span class="req">*</span></label>
+          <select id="unlistedTasks">
+            <option value="">— Select —</option>
+            <option>No, the list above is complete</option>
+            <option>Yes, minor unlisted tasks</option>
+            <option>Yes, significant unlisted tasks</option>
+          </select>
+          <span class="field-error" id="err-unlistedTasks">This field is required.</span>
+        </div>
+        <div class="field-group span-2" id="fg-challenge">
+          <label>Biggest Workload Challenge <span class="req">*</span></label>
+          <select id="challenge">
+            <option value="">— Select —</option>
+            <option>Too many tasks, not enough time</option>
+            <option>Tasks are unclear or poorly defined</option>
+            <option>Dependency on other team members</option>
+            <option>Lack of tools or resources</option>
+            <option>Repetitive low-value tasks</option>
+            <option>No major challenge at the moment</option>
+            <option>Other</option>
+          </select>
+          <span class="field-error" id="err-challenge">This field is required.</span>
+        </div>
+        <div class="field-group span-2">
+          <label>Additional Comments or Suggestions <span style="font-weight:400;text-transform:none;color:var(--text-lt);font-size:10px">(optional)</span></label>
+          <textarea id="comments" placeholder="Any feedback regarding workload, tools, processes, or team structure…"></textarea>
+          <span class="field-hint">Your manager reviews this field personally. Be candid and constructive.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card" style="background:var(--bg);border:1px solid var(--border);">
+      <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;">Ready to submit your report?</div>
+      <div style="font-size:13px;color:var(--text-mid);line-height:1.6;">Your response will be recorded and made available to your direct manager and the HR Operations team. It will be reviewed within <strong>2 working days</strong>. All data is strictly confidential.</div>
+    </div>
+
+    <div class="nav-bar">
+      <div class="nav-bar-left">
+        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <span class="nav-step-info">Step 6 of 6</span>
+      </div>
+      <button class="btn-submit" id="submitBtn" onclick="submitForm()">
         <span id="submitBtnText">Submit Report</span>
         <span id="submitSpinner" style="display:none"><div class="spinner"></div></span>
       </button>
     </div>
-
-  </form>
-
-  <div class="success-screen" id="successScreen">
-    <div class="success-icon">✓</div>
-    <h2>Report Submitted Successfully</h2>
-    <p>Thank you. Your workload report has been received.<br>Your manager will review it within 2 working days.</p>
-    <button onclick="location.reload()" style="margin-top:24px;padding:10px 24px;background:var(--navy);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;">Submit Another Response</button>
   </div>
 
-</div>
+  <!-- ===============================================================
+       THANK YOU PANEL
+  =============================================================== -->
+  <div class="thank-you-panel" id="thankYouPanel">
+    <div class="ty-icon">✓</div>
+    <h2>Report Submitted Successfully</h2>
+    <p class="ty-sub">Thank you for completing your workload report. Your submission has been received by the HR &amp; Operations Division and will be reviewed by your direct manager.</p>
+    <p class="ty-ref" id="tyRef">Reference: <span id="tyRefCode">—</span></p>
+    <div class="ty-divider"></div>
+    <p style="font-size:13px;color:var(--text-mid);margin-bottom:20px;">Expected review turnaround: <strong>2 working days</strong>. You will be contacted if clarification is required.</p>
+    <div class="ty-actions">
+      <button class="ty-btn ty-btn-primary" onclick="location.reload()">Submit Another Response</button>
+      <button class="ty-btn ty-btn-secondary" onclick="window.print()">Print / Save PDF</button>
+    </div>
+  </div>
+
+</div><!-- /main-wrap -->
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ── CONFIG: paste your Google Apps Script Web App URL here ──
+// ======================================================
+// CONFIG
+// ======================================================
 const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
 
-// ── Task counters ──
+// ======================================================
+// STEP NAVIGATION
+// ======================================================
+let currentStep = 0;
+const TOTAL_STEPS = 6;
+
+function goToStep(n) {
+  if (n < 0 || n >= TOTAL_STEPS) return;
+  // Deactivate current
+  document.getElementById('panel-' + currentStep).classList.remove('active');
+  document.getElementById('nav-' + currentStep).classList.remove('active');
+  // Mark as completed if moving forward
+  if (n > currentStep) {
+    document.getElementById('nav-' + currentStep).classList.add('completed');
+    const dot = document.querySelector('#nav-' + currentStep + ' .step-dot');
+    if (dot) dot.textContent = '✓';
+  }
+  currentStep = n;
+  document.getElementById('panel-' + currentStep).classList.add('active');
+  document.getElementById('nav-' + currentStep).classList.add('active');
+  document.getElementById('nav-' + currentStep).classList.remove('completed');
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateProgress();
+  // Scroll step nav item into view
+  const navItem = document.getElementById('nav-' + currentStep);
+  if (navItem) navItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+}
+
+function nextStep() { goToStep(currentStep + 1); }
+function prevStep() { goToStep(currentStep - 1); }
+
+// ======================================================
+// VALIDATION (Personal Info step)
+// ======================================================
+const REQUIRED_FIELDS = [
+  { id: 'fullName',   label: 'Full Name' },
+  { id: 'jobTitle',   label: 'Job Title' },
+  { id: 'department', label: 'Branch Name' },
+  { id: 'teamRole',   label: 'Team Role' },
+  { id: 'manager',    label: 'Direct Manager' },
+  { id: 'period',     label: 'Report Period' },
+];
+
+function clearFieldError(id) {
+  const el = document.getElementById(id);
+  const fg = document.getElementById('fg-' + id);
+  if (el)  el.classList.remove('invalid');
+  if (fg)  fg.classList.remove('has-error');
+}
+
+function setFieldError(id) {
+  const el = document.getElementById(id);
+  const fg = document.getElementById('fg-' + id);
+  if (el)  el.classList.add('invalid');
+  if (fg)  fg.classList.add('has-error');
+}
+
+function validateAndNext() {
+  // Clear previous errors
+  REQUIRED_FIELDS.forEach(f => clearFieldError(f.id));
+  const summary = document.getElementById('valSummary');
+  const list    = document.getElementById('valList');
+  summary.classList.remove('show');
+  list.innerHTML = '';
+
+  const errors = [];
+  REQUIRED_FIELDS.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (!el || !el.value.trim()) {
+      setFieldError(f.id);
+      errors.push(f);
+    }
+  });
+
+  if (errors.length > 0) {
+    // Show summary
+    errors.forEach(f => {
+      const li = document.createElement('li');
+      li.textContent = f.label;
+      li.onclick = () => {
+        const el = document.getElementById(f.id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => el.focus(), 400);
+        }
+      };
+      list.appendChild(li);
+    });
+    summary.classList.add('show');
+
+    // Scroll to first invalid field
+    const firstErrorId = errors[0].id;
+    const firstEl = document.getElementById(firstErrorId);
+    if (firstEl) {
+      firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => firstEl.focus(), 350);
+    }
+
+    showToast('Please complete all required fields before continuing.', true);
+    return;
+  }
+
+  // All good — proceed
+  summary.classList.remove('show');
+  nextStep();
+}
+
+// Live clear errors as user types
+REQUIRED_FIELDS.forEach(f => {
+  const el = document.getElementById(f.id);
+  if (!el) return;
+  el.addEventListener('input',  () => clearFieldError(f.id));
+  el.addEventListener('change', () => clearFieldError(f.id));
+});
+
+// ======================================================
+// ASSESSMENT VALIDATION + SUBMIT
+// ======================================================
+const ASSESS_FIELDS = [
+  { id: 'taskClarity',   label: 'Task clarity question' },
+  { id: 'unlistedTasks', label: 'Unlisted tasks question' },
+  { id: 'challenge',     label: 'Biggest workload challenge' },
+];
+
+function submitForm() {
+  // Validate assessment fields
+  ASSESS_FIELDS.forEach(f => clearFieldError(f.id));
+  const errRating = document.getElementById('err-rating');
+  const summary = document.getElementById('valSummaryAssess');
+  const list    = document.getElementById('valListAssess');
+  summary.classList.remove('show');
+  list.innerHTML = '';
+  if (errRating) errRating.style.display = 'none';
+
+  const errors = [];
+
+  if (!selectedRating) {
+    errors.push({ id: 'workloadRating', label: 'Overall Workload Rating' });
+    if (errRating) errRating.style.display = 'block';
+    const rw = document.getElementById('ratingWrap');
+    if (rw) rw.style.outline = '2px solid var(--danger)';
+    setTimeout(() => { if (rw) rw.style.outline = ''; }, 2000);
+  }
+
+  ASSESS_FIELDS.forEach(f => {
+    const el = document.getElementById(f.id);
+    if (!el || !el.value.trim()) {
+      setFieldError(f.id);
+      errors.push(f);
+    }
+  });
+
+  if (errors.length > 0) {
+    errors.forEach(f => {
+      const li = document.createElement('li');
+      li.textContent = f.label;
+      li.onclick = () => {
+        const el = document.getElementById(f.id) || document.getElementById('ratingWrap');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => { if (el.focus) el.focus(); }, 400);
+        }
+      };
+      list.appendChild(li);
+    });
+    summary.classList.add('show');
+
+    const firstEl = document.getElementById(errors[0].id) || document.getElementById('ratingWrap');
+    if (firstEl) {
+      firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => { if (firstEl.focus) firstEl.focus(); }, 350);
+    }
+    showToast('Please complete all required fields before submitting.', true);
+    return;
+  }
+
+  // Also ensure Personal Info was filled (double-check)
+  const infoErrors = REQUIRED_FIELDS.filter(f => {
+    const el = document.getElementById(f.id);
+    return !el || !el.value.trim();
+  });
+  if (infoErrors.length > 0) {
+    showToast('Some personal information fields are missing. Returning to Step 2.', true);
+    goToStep(1);
+    setTimeout(() => validateAndNext(), 600);
+    return;
+  }
+
+  doSubmit();
+}
+
+async function doSubmit() {
+  const btn = document.getElementById('submitBtn');
+  document.getElementById('submitBtnText').style.display = 'none';
+  document.getElementById('submitSpinner').style.display = 'flex';
+  btn.disabled = true;
+
+  const payload = {
+    timestamp:      new Date().toISOString(),
+    fullName:       document.getElementById('fullName').value,
+    jobTitle:       document.getElementById('jobTitle').value,
+    startDate:      document.getElementById('startDate').value,
+    branchName:     document.getElementById('department').value,
+    teamRole:       document.getElementById('teamRole').value,
+    manager:        document.getElementById('manager').value,
+    empId:          document.getElementById('empId').value,
+    period:         document.getElementById('period').value,
+    dailyTasks:     JSON.stringify(collectTasks('daily')),
+    weeklyTasks:    JSON.stringify(collectTasks('weekly')),
+    monthlyTasks:   JSON.stringify(collectTasks('monthly')),
+    workloadRating: selectedRating,
+    taskClarity:    document.getElementById('taskClarity').value,
+    unlistedTasks:  document.getElementById('unlistedTasks').value,
+    challenge:      document.getElementById('challenge').value,
+    comments:       document.getElementById('comments').value,
+  };
+
+  // Generate reference code
+  const refCode = 'UME-' + new Date().getFullYear() + '-' + Math.random().toString(36).substring(2,8).toUpperCase();
+  document.getElementById('tyRefCode').textContent = refCode;
+
+  if (SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
+    await new Promise(r => setTimeout(r, 1500));
+    showThankYou();
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    Object.entries(payload).forEach(([k,v]) => formData.append(k, v));
+    await fetch(SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors' });
+    showThankYou();
+  } catch(err) {
+    showToast('Submission failed. Please try again or contact IT support.', true);
+    document.getElementById('submitBtnText').style.display = 'inline';
+    document.getElementById('submitSpinner').style.display = 'none';
+    btn.disabled = false;
+  }
+}
+
+function showThankYou() {
+  // Hide all panels and step nav
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector('.step-nav-wrap').style.display = 'none';
+  document.getElementById('thankYouPanel').classList.add('show');
+  document.getElementById('progressBar').style.width = '100%';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ======================================================
+// TASK BUILDER
+// ======================================================
 const taskCounts = { daily: 0, weekly: 0, monthly: 0 };
 const taskColors = { daily: 'daily-num', weekly: 'weekly-num', monthly: 'monthly-num' };
 
@@ -780,7 +1374,7 @@ const catOptions = {
 };
 
 function buildSelect(opts, cls='') {
-  return `<select class="${cls}">${opts.map(o=>`<option>${o}</option>`).join('')}</select>`;
+  return '<select class="' + cls + '">' + opts.map(o => '<option>' + o + '</option>').join('') + '</select>';
 }
 
 function addTask(type) {
@@ -789,62 +1383,67 @@ function addTask(type) {
   const container = document.getElementById(type + 'TasksContainer');
   const div = document.createElement('div');
   div.className = 'task-block';
-  div.id = `${type}-task-${n}`;
-  div.innerHTML = `
-    <div class="task-block-header">
-      <div class="task-num ${taskColors[type]}">${n}</div>
-      <input class="task-label-input" type="text" placeholder="Task name / description…" data-field="name">
-      <button type="button" class="task-remove" onclick="removeTask('${type}-task-${n}')" title="Remove task">✕</button>
-    </div>
-    <div class="task-fields">
-      <div class="field-group">
-        <label>Category</label>
-        ${buildSelect(catOptions[type])}
-      </div>
-      <div class="field-group">
-        <label>Estimated Hours</label>
-        <input type="number" min="0.1" max="24" step="0.5" placeholder="e.g. 1.5" data-field="hours">
-      </div>
-      <div class="field-group">
-        <label>Frequency</label>
-        ${buildSelect(freqOptions[type])}
-      </div>
-      <div class="field-group">
-        <label>Priority</label>
-        <select class="priority" data-field="priority">
-          <option>🔴 Critical</option>
-          <option selected>🟠 High</option>
-          <option>🟡 Medium</option>
-          <option>🟢 Low</option>
-        </select>
-      </div>
-      <div class="field-group">
-        <label>% of Workload</label>
-        <input type="number" min="1" max="100" step="1" placeholder="e.g. 20" data-field="pct">
-      </div>
-      <div class="field-group">
-        <label>Deadline / Due Date</label>
-        <input type="text" placeholder="e.g. Daily by 10 AM" data-field="deadline">
-      </div>
-      <div class="field-group task-note">
-        <label>Notes / Challenges</label>
-        <textarea rows="2" placeholder="Blockers, dependencies, or comments…" data-field="notes"></textarea>
-      </div>
-    </div>`;
+  div.id = type + '-task-' + n;
+  div.style.opacity = '0';
+  div.style.transform = 'translateY(10px)';
+  div.innerHTML =
+    '<div class="task-block-header">' +
+      '<div class="task-num ' + taskColors[type] + '">' + n + '</div>' +
+      '<input class="task-label-input" type="text" placeholder="Task name / description…" data-field="name">' +
+      '<button type="button" class="task-remove" onclick="removeTask(\'' + type + '-task-' + n + '\')" title="Remove task">✕</button>' +
+    '</div>' +
+    '<div class="task-fields">' +
+      '<div class="field-group"><label>Category</label>' + buildSelect(catOptions[type]) + '</div>' +
+      '<div class="field-group"><label>Estimated Hours</label><input type="number" min="0.1" max="24" step="0.5" placeholder="e.g. 1.5" data-field="hours"></div>' +
+      '<div class="field-group"><label>Frequency</label>' + buildSelect(freqOptions[type]) + '</div>' +
+      '<div class="field-group"><label>Priority</label>' +
+        '<select class="priority" data-field="priority">' +
+          '<option>🔴 Critical</option>' +
+          '<option selected>🟠 High</option>' +
+          '<option>🟡 Medium</option>' +
+          '<option>🟢 Low</option>' +
+        '</select>' +
+      '</div>' +
+      '<div class="field-group"><label>% of Workload</label><input type="number" min="1" max="100" step="1" placeholder="e.g. 20" data-field="pct"></div>' +
+      '<div class="field-group"><label>Deadline / Due Date</label><input type="text" placeholder="e.g. Daily by 10 AM" data-field="deadline"></div>' +
+      '<div class="field-group task-note"><label>Notes / Challenges</label><textarea rows="2" placeholder="Blockers, dependencies, or comments…" data-field="notes"></textarea></div>' +
+    '</div>';
   container.appendChild(div);
+  // Animate in
+  requestAnimationFrame(() => {
+    div.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+    div.style.opacity = '1';
+    div.style.transform = 'translateY(0)';
+  });
   updateProgress();
   div.querySelector('.task-label-input').focus();
 }
 
 function removeTask(id) {
   const el = document.getElementById(id);
-  if (el) { el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='all 0.2s'; setTimeout(()=>el.remove(), 200); }
+  if (!el) return;
+  el.style.transition = 'opacity 0.2s, transform 0.2s';
+  el.style.opacity = '0';
+  el.style.transform = 'translateX(20px)';
+  setTimeout(() => el.remove(), 220);
 }
 
-function toggleSection(id) {
-  document.getElementById(id).classList.toggle('open');
+function collectTasks(type) {
+  return Array.from(document.querySelectorAll('[id^="' + type + '-task-"]')).map(block => ({
+    name:      block.querySelector('[data-field="name"]')?.value || '',
+    category:  block.querySelector('select:first-of-type')?.value || '',
+    hours:     block.querySelector('[data-field="hours"]')?.value || '',
+    frequency: block.querySelectorAll('select')[1]?.value || '',
+    priority:  block.querySelector('[data-field="priority"]')?.value || '',
+    pct:       block.querySelector('[data-field="pct"]')?.value || '',
+    deadline:  block.querySelector('[data-field="deadline"]')?.value || '',
+    notes:     block.querySelector('[data-field="notes"]')?.value || '',
+  })).filter(t => t.name.trim());
 }
 
+// ======================================================
+// WORKLOAD RATING
+// ======================================================
 let selectedRating = 0;
 function setRating(val) {
   selectedRating = val;
@@ -852,139 +1451,77 @@ function setRating(val) {
   document.querySelectorAll('.rating-btn').forEach((btn, i) => {
     btn.classList.toggle('selected', i < val);
   });
+  const errRating = document.getElementById('err-rating');
+  const rw = document.getElementById('ratingWrap');
+  if (errRating) errRating.style.display = 'none';
+  if (rw) rw.style.outline = '';
+  updateProgress();
 }
 
+// ======================================================
+// TENURE CALCULATION
+// ======================================================
 function calcTenure() {
   const startVal = document.getElementById('startDate').value;
   const display  = document.getElementById('tenureDisplay');
   const text     = document.getElementById('tenureText');
-  if (!startVal) { display.style.display = 'none'; return; }
-
+  if (!startVal) { display.classList.remove('show'); return; }
   const start = new Date(startVal);
   const now   = new Date();
-  if (start > now) { display.style.display = 'none'; return; }
+  if (start > now) { display.classList.remove('show'); return; }
 
   let years  = now.getFullYear() - start.getFullYear();
   let months = now.getMonth()    - start.getMonth();
   let days   = now.getDate()     - start.getDate();
-
-  if (days < 0) {
-    months--;
-    days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
-  }
+  if (days < 0) { months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
   if (months < 0) { years--; months += 12; }
 
-  const totalMonths = years * 12 + months;
   let parts = [];
   if (years  > 0) parts.push(years  + (years  === 1 ? ' year'  : ' years'));
   if (months > 0) parts.push(months + (months === 1 ? ' month' : ' months'));
   if (days   > 0 && years === 0) parts.push(days + (days === 1 ? ' day' : ' days'));
 
   text.textContent = 'Service period: ' + (parts.length ? parts.join(', ') : 'Less than a day');
-  display.style.display = 'block';
+  display.classList.add('show');
   updateProgress();
 }
 
+// ======================================================
+// PROGRESS BAR
+// ======================================================
 function updateProgress() {
-  const fields = ['fullName','jobTitle','startDate','department','teamRole','manager','period'];
-  const filled = fields.filter(f => document.getElementById(f)?.value?.trim()).length;
+  const fields = ['fullName','jobTitle','department','teamRole','manager','period'];
+  const filled = fields.filter(f => { const el = document.getElementById(f); return el && el.value && el.value.trim(); }).length;
   const hasTasks = taskCounts.daily + taskCounts.weekly + taskCounts.monthly > 0;
   const hasRating = selectedRating > 0;
-  const pct = Math.round(((filled / fields.length) * 60) + (hasTasks ? 25 : 0) + (hasRating ? 15 : 0));
+  const stepBase = (currentStep / (TOTAL_STEPS - 1)) * 70;
+  const fieldPct = (filled / fields.length) * 20;
+  const taskPct  = hasTasks  ? 5 : 0;
+  const ratePct  = hasRating ? 5 : 0;
+  const pct = Math.min(99, Math.round(stepBase + fieldPct + taskPct + ratePct));
   document.getElementById('progressBar').style.width = pct + '%';
 }
 
-document.querySelectorAll('input, select, textarea').forEach(el => {
-  el.addEventListener('input', updateProgress);
-  el.addEventListener('change', updateProgress);
-});
-
-function collectTasks(type) {
-  return Array.from(document.querySelectorAll(`[id^="${type}-task-"]`)).map(block => ({
-    name:     block.querySelector('[data-field="name"]')?.value || '',
-    category: block.querySelector('select:first-of-type')?.value || '',
-    hours:    block.querySelector('[data-field="hours"]')?.value || '',
-    frequency:block.querySelectorAll('select')[1]?.value || '',
-    priority: block.querySelector('[data-field="priority"]')?.value || '',
-    pct:      block.querySelector('[data-field="pct"]')?.value || '',
-    deadline: block.querySelector('[data-field="deadline"]')?.value || '',
-    notes:    block.querySelector('[data-field="notes"]')?.value || '',
-  })).filter(t => t.name.trim());
-}
-
-function showToast(msg, isError=false) {
+// ======================================================
+// TOAST
+// ======================================================
+function showToast(msg, isError = false) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
+  t.innerHTML = (isError ? '⚠ ' : '✓ ') + msg;
   t.style.background = isError ? 'var(--danger)' : 'var(--success)';
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 4000);
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => t.classList.remove('show'), 4500);
 }
 
-document.getElementById('workloadForm').addEventListener('submit', async function(e) {
-  e.preventDefault();
-
-  const required = ['fullName','jobTitle','startDate','department','teamRole','manager','period'];
-  let valid = true;
-  required.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el.value.trim()) { el.classList.add('invalid'); valid = false; }
-    else el.classList.remove('invalid');
-  });
-  if (!selectedRating) { showToast('Please select a workload rating.', true); valid = false; }
-  if (!valid) { showToast('Please fill in all required fields.', true); return; }
-
-  const btn = document.getElementById('submitBtn');
-  document.getElementById('submitBtnText').style.display = 'none';
-  document.getElementById('submitSpinner').style.display = 'flex';
-  btn.disabled = true;
-
-  const payload = {
-    timestamp:    new Date().toISOString(),
-    fullName:     document.getElementById('fullName').value,
-    jobTitle:     document.getElementById('jobTitle').value,
-    startDate:    document.getElementById('startDate').value,
-    branchName:   document.getElementById('department').value,
-    teamRole:     document.getElementById('teamRole').value,
-    manager:      document.getElementById('manager').value,
-    empId:        document.getElementById('empId').value,
-    period:       document.getElementById('period').value,
-    dailyTasks:   JSON.stringify(collectTasks('daily')),
-    weeklyTasks:  JSON.stringify(collectTasks('weekly')),
-    monthlyTasks: JSON.stringify(collectTasks('monthly')),
-    workloadRating: selectedRating,
-    taskClarity:  document.getElementById('taskClarity').value,
-    unlistedTasks:document.getElementById('unlistedTasks').value,
-    challenge:    document.getElementById('challenge').value,
-    comments:     document.getElementById('comments').value,
-  };
-
-  // If no script URL configured, show demo success
-  if (SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
-    await new Promise(r => setTimeout(r, 1500));
-    document.getElementById('workloadForm').style.display = 'none';
-    document.getElementById('successScreen').classList.add('show');
-    return;
-  }
-
-  try {
-    const formData = new FormData();
-    Object.entries(payload).forEach(([k,v]) => formData.append(k, v));
-    await fetch(SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors' });
-    document.getElementById('workloadForm').style.display = 'none';
-    document.getElementById('successScreen').classList.add('show');
-  } catch(err) {
-    showToast('Submission failed. Please try again or contact IT.', true);
-    document.getElementById('submitBtnText').style.display = 'inline';
-    document.getElementById('submitSpinner').style.display = 'none';
-    btn.disabled = false;
-  }
-});
-
-// Initialize with one task per section
+// ======================================================
+// INIT
+// ======================================================
 window.addEventListener('DOMContentLoaded', () => {
   addTask('daily');
   addTask('weekly');
   addTask('monthly');
+  updateProgress();
 });
 </script>
 </body>
