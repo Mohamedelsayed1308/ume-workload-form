@@ -3,510 +3,989 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Employee Workload Tracking Form</title>
+<title>Employee Workload Tracking — UME Shipping Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
   :root {
-    --primary: #1a3c5e;
-    --accent: #2e86c1;
-    --light-accent: #d6eaf8;
-    --success: #1e8449;
-    --warning: #d4ac0d;
+    --navy: #0f2d4a;
+    --navy-mid: #1b4872;
+    --teal: #0d7377;
+    --teal-lt: #e8f6f7;
+    --accent: #c8a96e;
+    --accent-lt: #fdf6ea;
+    --surface: #ffffff;
+    --bg: #f4f7fb;
+    --border: #dde4ed;
+    --text: #1a2636;
+    --text-mid: #4a6380;
+    --text-lt: #8a9bb0;
     --danger: #c0392b;
-    --bg: #f4f6f9;
-    --white: #ffffff;
-    --text: #2c3e50;
-    --border: #ccd6e0;
-    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+    --danger-lt: #fdf0ee;
+    --success: #1a6b3c;
+    --success-lt: #eaf6ef;
+    --daily: #1565c0;
+    --daily-lt: #e8f0fd;
+    --weekly: #2e7d32;
+    --weekly-lt: #e8f5e9;
+    --monthly: #6a1b9a;
+    --monthly-lt: #f3e5f5;
+    --radius: 10px;
+    --shadow: 0 2px 16px rgba(15,45,74,0.09);
+    --shadow-sm: 0 1px 6px rgba(15,45,74,0.06);
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── Header ── */
   .site-header {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-    color: #fff; padding: 28px 0 18px; text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 100;
+    background: var(--navy);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 3px solid var(--accent);
   }
-  .site-header h1 { font-size: 1.8rem; font-weight: 700; letter-spacing: 0.5px; }
-  .site-header p { font-size: 0.95rem; opacity: 0.88; margin-top: 4px; }
-  .progress-wrap { background: rgba(255,255,255,0.2); height: 6px; margin-top: 16px; border-radius: 3px; overflow: hidden; }
-  .progress-bar { height: 100%; background: #f9ca24; border-radius: 3px; transition: width 0.4s ease; width: 20%; }
-  .steps { display: flex; justify-content: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
-  .step-pill { padding: 4px 14px; border-radius: 20px; font-size: 0.78rem; background: rgba(255,255,255,0.15); cursor: pointer; transition: background 0.2s; }
-  .step-pill.active { background: rgba(255,255,255,0.4); font-weight: 700; }
-  .container { max-width: 900px; margin: 30px auto 50px; padding: 0 16px; }
-  .section-card { background: #fff; border-radius: 12px; box-shadow: var(--shadow); margin-bottom: 28px; overflow: hidden; display: none; }
-  .section-card.active { display: block; }
-  .section-header { background: var(--primary); color: #fff; padding: 16px 24px; display: flex; align-items: center; gap: 12px; }
-  .section-header .icon { font-size: 1.4rem; }
-  .section-header h2 { font-size: 1.1rem; font-weight: 600; }
-  .section-body { padding: 24px; }
-  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .form-group { display: flex; flex-direction: column; gap: 5px; }
-  .form-group.full { grid-column: 1 / -1; }
-  label { font-size: 0.85rem; font-weight: 600; color: var(--primary); }
-  input[type=text], input[type=date], input[type=email], input[type=number], select, textarea {
-    padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 8px;
-    font-size: 0.92rem; color: var(--text); transition: border-color 0.2s, box-shadow 0.2s;
-    background: #fafcff; width: 100%;
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
-  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(46,134,193,0.12); }
+  .logo-mark {
+    width: 40px; height: 40px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--navy);
+    font-weight: 400;
+    flex-shrink: 0;
+  }
+  .header-text h1 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+  }
+  .header-text p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+  }
+  .header-badge {
+    margin-left: auto;
+    background: rgba(200,169,110,0.15);
+    border: 1px solid rgba(200,169,110,0.3);
+    color: var(--accent);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Progress bar ── */
+  .progress-bar-wrap {
+    background: rgba(0,0,0,0.25);
+    height: 3px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* ── Main layout ── */
+  .main-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 24px 80px;
+  }
+
+  /* ── Form intro ── */
+  .form-intro {
+    background: var(--navy);
+    border-radius: var(--radius);
+    padding: 32px 36px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .form-intro::before {
+    content: '';
+    position: absolute;
+    right: -30px; top: -30px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(200,169,110,0.08);
+  }
+  .form-intro h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .form-intro p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    max-width: 560px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+  .intro-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .intro-tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+  }
+  .intro-tag.daily   { background: rgba(21,101,192,0.25); color: #90caf9; }
+  .intro-tag.weekly  { background: rgba(46,125,50,0.25);  color: #a5d6a7; }
+  .intro-tag.monthly { background: rgba(106,27,154,0.25); color: #ce93d8; }
+  .intro-tag.assess  { background: rgba(200,169,110,0.2); color: var(--accent); }
+
+  /* ── Section card ── */
+  .section-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .section-header {
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .section-header:hover { background: var(--bg); }
+  .section-icon {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    flex-shrink: 0;
+  }
+  .section-icon.emp   { background: #e8f0fd; color: var(--daily); }
+  .section-icon.daily { background: var(--daily-lt); color: var(--daily); }
+  .section-icon.weekly{ background: var(--weekly-lt); color: var(--weekly); }
+  .section-icon.monthly{ background: var(--monthly-lt); color: var(--monthly); }
+  .section-icon.assess{ background: var(--accent-lt); color: #8a6200; }
+  .section-title-wrap { flex: 1; }
+  .section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .section-subtitle {
+    font-size: 12px;
+    color: var(--text-lt);
+    margin-top: 2px;
+  }
+  .section-chevron {
+    font-size: 18px;
+    color: var(--text-lt);
+    transition: transform 0.3s ease;
+  }
+  .section-card.open .section-chevron { transform: rotate(180deg); }
+  .section-body {
+    display: none;
+    border-top: 1px solid var(--border);
+    padding: 24px;
+  }
+  .section-card.open .section-body { display: block; }
+
+  /* ── Form fields ── */
+  .field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .field-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .field-grid.full   { grid-template-columns: 1fr; }
+  @media(max-width: 620px) {
+    .field-grid, .field-grid.cols-3 { grid-template-columns: 1fr; }
+  }
+
+  .field-group { display: flex; flex-direction: column; gap: 6px; }
+  .field-group.span-2 { grid-column: span 2; }
+  @media(max-width: 620px) { .field-group.span-2 { grid-column: span 1; } }
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-mid);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  label .req { color: var(--danger); margin-left: 2px; }
+
+  input[type=text], input[type=date], input[type=number],
+  select, textarea {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    width: 100%;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--navy-mid);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(27,72,114,0.1);
+  }
+  input.invalid, select.invalid, textarea.invalid {
+    border-color: var(--danger);
+    background: var(--danger-lt);
+  }
   textarea { resize: vertical; min-height: 80px; }
-  .required { color: var(--danger); margin-left: 2px; }
-  .task-table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-  thead th { padding: 8px; font-weight: 600; text-align: left; border-bottom: 2px solid var(--border); background: #f8faff; color: var(--primary); white-space: nowrap; }
-  tbody tr { border-bottom: 1px solid #eef1f7; }
-  tbody tr:hover { background: #f9fbff; }
-  tbody td { padding: 6px; vertical-align: middle; }
-  tbody td input, tbody td select { font-size: 0.8rem; padding: 6px 8px; }
-  .add-row-btn { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 7px 16px; background: var(--light-accent); color: var(--accent); border: 1.5px dashed var(--accent); border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-  .add-row-btn:hover { background: #bde0f7; }
-  .del-btn { background: #fde8e8; border: none; border-radius: 6px; color: var(--danger); padding: 4px 8px; cursor: pointer; font-size: 0.85rem; }
-  .del-btn:hover { background: #fbbaba; }
-  .summary-card { background: linear-gradient(135deg, #f0f7ff, #e8f4ff); border: 1.5px solid #bee3f8; border-radius: 12px; padding: 20px; margin-top: 20px; }
-  .summary-title { font-size: 1rem; font-weight: 700; color: var(--primary); margin-bottom: 14px; }
-  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .kpi { background: #fff; border-radius: 10px; padding: 14px; text-align: center; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
-  .kpi .value { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
-  .kpi .label { font-size: 0.78rem; color: #7f8c8d; margin-top: 2px; }
-  .status-banner { margin-top: 16px; padding: 12px 18px; border-radius: 10px; font-weight: 700; font-size: 0.95rem; text-align: center; }
-  .status-overloaded { background: #fde8e8; color: var(--danger); }
-  .status-high { background: #fef3e2; color: #d35400; }
-  .status-optimal { background: #e8f8f5; color: var(--success); }
-  .status-under { background: #eaf4fe; color: var(--accent); }
-  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 12px; }
-  .btn { padding: 11px 28px; border: none; border-radius: 9px; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: all 0.2s; }
-  .btn-secondary { background: #ecf0f1; color: var(--text); }
-  .btn-secondary:hover { background: #d5dbdb; }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:hover { background: #1a70a3; }
-  .btn-success { background: var(--success); color: #fff; display: flex; align-items: center; gap: 8px; }
-  .btn-success:hover { background: #196040; }
-  .success-screen { text-align: center; padding: 60px 24px; display: none; }
+
+  .field-hint {
+    font-size: 11px;
+    color: var(--text-lt);
+    margin-top: 2px;
+  }
+
+  /* ── Task block ── */
+  .task-block {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    transition: border-color 0.2s;
+    position: relative;
+  }
+  .task-block:focus-within { border-color: var(--navy-mid); }
+
+  .task-block-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .task-num {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .task-num.daily-num   { background: var(--daily); }
+  .task-num.weekly-num  { background: var(--weekly); }
+  .task-num.monthly-num { background: var(--monthly); }
+
+  .task-label-input {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    background: none;
+    border: none;
+    border-bottom: 1.5px solid var(--border);
+    border-radius: 0;
+    padding: 4px 0;
+    color: var(--text);
+  }
+  .task-label-input::placeholder { color: var(--text-lt); font-weight: 400; }
+  .task-label-input:focus {
+    border-bottom-color: var(--navy-mid);
+    box-shadow: none;
+    background: none;
+  }
+  .task-remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--text-lt);
+    padding: 4px;
+    border-radius: 4px;
+    transition: color 0.15s, background 0.15s;
+    line-height: 1;
+  }
+  .task-remove:hover { color: var(--danger); background: var(--danger-lt); }
+
+  .task-fields { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  @media(max-width: 620px) { .task-fields { grid-template-columns: 1fr 1fr; } }
+
+  .task-note { grid-column: span 3; }
+  @media(max-width: 620px) { .task-note { grid-column: span 2; } }
+
+  /* ── Priority badges ── */
+  select.priority option[value="Critical"] { color: #c0392b; }
+  select.priority option[value="High"]     { color: #e67e22; }
+  select.priority option[value="Medium"]   { color: #f39c12; }
+  select.priority option[value="Low"]      { color: #27ae60; }
+
+  /* ── Add task button ── */
+  .add-task-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: 1.5px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 12px 18px;
+    width: 100%;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+  .add-task-btn:hover {
+    border-color: var(--navy-mid);
+    color: var(--navy);
+    background: #f0f5ff;
+  }
+
+  /* ── Rating scale ── */
+  .rating-wrap {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .rating-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+    min-width: 58px;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .rating-btn:hover { border-color: var(--navy-mid); background: #eef3fb; }
+  .rating-btn.selected {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: #fff;
+  }
+  .rating-num { font-size: 18px; font-weight: 600; }
+  .rating-lbl { font-size: 10px; color: inherit; opacity: 0.7; white-space: nowrap; }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+  }
+
+  /* ── Section color accents ── */
+  .accent-daily   { border-left: 4px solid var(--daily); }
+  .accent-weekly  { border-left: 4px solid var(--weekly); }
+  .accent-monthly { border-left: 4px solid var(--monthly); }
+  .accent-assess  { border-left: 4px solid var(--accent); }
+
+  /* ── Submit area ── */
+  .submit-area {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow);
+  }
+  .submit-info p { font-size: 13px; color: var(--text-mid); }
+  .submit-info strong { color: var(--text); font-weight: 600; }
+  .submit-btn {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 32px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.01em;
+  }
+  .submit-btn:hover { background: var(--navy-mid); }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { background: var(--text-lt); cursor: not-allowed; }
+
+  /* ── Toast / Success ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--success);
+    color: #fff;
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.35s ease;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 24px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+  }
   .success-screen.show { display: block; }
-  .success-icon { font-size: 4rem; margin-bottom: 16px; }
-  .success-screen h2 { color: var(--success); font-size: 1.5rem; margin-bottom: 8px; }
-  .success-screen p { color: #7f8c8d; font-size: 1rem; max-width: 400px; margin: 0 auto; }
-  .ref-id { margin-top: 16px; font-size: 0.85rem; color: var(--accent); font-weight: 600; }
-  .spinner { display: none; border: 3px solid #ecf0f1; border-top: 3px solid var(--accent); border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; }
+  .success-icon {
+    width: 72px; height: 72px;
+    background: var(--success-lt);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 20px;
+  }
+  .success-screen h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--text);
+    margin-bottom: 10px;
+    font-weight: 400;
+  }
+  .success-screen p { color: var(--text-mid); font-size: 15px; }
+
+  /* ── Spinner ── */
   @keyframes spin { to { transform: rotate(360deg); } }
-  @media (max-width: 680px) {
-    .form-grid { grid-template-columns: 1fr; }
-    .kpi-grid { grid-template-columns: 1fr 1fr; }
-    .site-header h1 { font-size: 1.3rem; }
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  .required-note {
+    font-size: 12px;
+    color: var(--text-lt);
+    margin-bottom: 20px;
   }
 </style>
 </head>
 <body>
+
 <header class="site-header">
-  <h1>&#128203; Employee Workload Tracking Form</h1>
-  <p>Submit your workload data securely and efficiently</p>
-  <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
-  <div class="steps" id="stepLabels">
-    <span class="step-pill active" data-step="1">1. Profile</span>
-    <span class="step-pill" data-step="2">2. Daily Tasks</span>
-    <span class="step-pill" data-step="3">3. Weekly Tasks</span>
-    <span class="step-pill" data-step="4">4. Monthly Tasks</span>
-    <span class="step-pill" data-step="5">5. Assessment</span>
+  <div class="header-inner">
+    <div class="logo-mark">U</div>
+    <div class="header-text">
+      <h1>UME Shipping Group</h1>
+      <p>Human Resources &amp; Operations Division</p>
+    </div>
+    <div class="header-badge">Confidential</div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressBar"></div>
   </div>
 </header>
-<div class="container">
 
-<!-- STEP 1: EMPLOYEE PROFILE -->
-<div class="section-card active" id="step1">
-  <div class="section-header"><span class="icon">&#128100;</span><h2>Section 1 — Employee Information</h2></div>
-  <div class="section-body">
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Full Name <span class="required">*</span></label>
-        <input type="text" id="fullName" placeholder="e.g. Mohamed El-Sayed" required>
-      </div>
-      <div class="form-group">
-        <label>Job Title <span class="required">*</span></label>
-        <input type="text" id="jobTitle" placeholder="e.g. Operations Manager">
-      </div>
-      <div class="form-group">
-        <label>Department <span class="required">*</span></label>
-        <select id="department">
-          <option value="">— Select Department —</option>
-          <option>Operations</option><option>Finance</option><option>Human Resources</option>
-          <option>Sales &amp; Marketing</option><option>Information Technology</option>
-          <option>Legal</option><option>Administration</option><option>Customer Service</option><option>Other</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Team Role <span class="required">*</span></label>
-        <select id="teamRole">
-          <option value="">— Select Role —</option>
-          <option>Core Team Member</option><option>Supporting Member</option>
-          <option>Team Lead</option><option>Manager</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Direct Manager <span class="required">*</span></label>
-        <input type="text" id="directManager" placeholder="e.g. Ahmed Hassan">
-      </div>
-      <div class="form-group">
-        <label>Employment Start Date</label>
-        <input type="date" id="startDate">
-      </div>
-      <div class="form-group">
-        <label>Email Address <span class="required">*</span></label>
-        <input type="email" id="emailAddress" placeholder="name@company.com">
-      </div>
-      <div class="form-group">
-        <label>Report Period <span class="required">*</span></label>
-        <input type="date" id="reportPeriod">
-      </div>
-    </div>
-    <div class="nav-row">
-      <div></div>
-      <button class="btn btn-primary" onclick="goTo(2)">Next: Daily Tasks &#8594;</button>
+<div class="main-wrap">
+
+  <div class="form-intro">
+    <h2>Employee Workload Tracking Form</h2>
+    <p>Please complete all sections accurately. This form enables management to evaluate workload distribution, task allocation efficiency, and individual performance. Submit at the end of each reporting period.</p>
+    <div class="intro-tags">
+      <span class="intro-tag daily">📅 Daily Tasks</span>
+      <span class="intro-tag weekly">📆 Weekly Tasks</span>
+      <span class="intro-tag monthly">🗓 Monthly Tasks</span>
+      <span class="intro-tag assess">📊 Assessment</span>
     </div>
   </div>
-</div>
 
-<!-- STEP 2: DAILY TASKS -->
-<div class="section-card" id="step2">
-  <div class="section-header"><span class="icon">&#128197;</span><h2>Section 2 — Daily Tasks</h2></div>
-  <div class="section-body">
-    <p style="color:#7f8c8d;font-size:0.85rem;margin-bottom:14px;">Log all tasks you perform on a daily basis. Fill in the estimated hours and workload percentage for each task.</p>
-    <div class="task-table-wrap">
-      <table id="dailyTable">
-        <thead><tr>
-          <th>#</th><th>Task Name / Description</th><th>Category</th>
-          <th>Est. Hours</th><th>Priority</th><th>Workload %</th><th>Notes</th><th></th>
-        </tr></thead>
-        <tbody id="dailyBody"></tbody>
-      </table>
-    </div>
-    <button class="add-row-btn" onclick="addRow('daily')">&#43; Add Daily Task</button>
-    <div class="summary-card" id="dailySummary">
-      <div class="summary-title">&#128200; Daily Workload Summary</div>
-      <div class="kpi-grid">
-        <div class="kpi"><div class="value" id="d_tasks">0</div><div class="label">Tasks Logged</div></div>
-        <div class="kpi"><div class="value" id="d_hours">0.0</div><div class="label">Total Hours/Day</div></div>
-        <div class="kpi"><div class="value" id="d_pct">0%</div><div class="label">Total Workload</div></div>
-      </div>
-      <div class="status-banner status-under" id="d_status">Status: Underutilized</div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-secondary" onclick="goTo(1)">&#8592; Back</button>
-      <button class="btn btn-primary" onclick="goTo(3)">Next: Weekly Tasks &#8594;</button>
-    </div>
-  </div>
-</div>
+  <p class="required-note">Fields marked with <span style="color:var(--danger)">*</span> are required.</p>
 
-<!-- STEP 3: WEEKLY TASKS -->
-<div class="section-card" id="step3">
-  <div class="section-header"><span class="icon">&#128466;</span><h2>Section 3 — Weekly Tasks</h2></div>
-  <div class="section-body">
-    <p style="color:#7f8c8d;font-size:0.85rem;margin-bottom:14px;">Log tasks that recur or are completed on a weekly basis.</p>
-    <div class="task-table-wrap">
-      <table id="weeklyTable">
-        <thead><tr>
-          <th>#</th><th>Task Name / Description</th><th>Category</th>
-          <th>Est. Hours</th><th>Priority</th><th>Workload %</th><th>Notes</th><th></th>
-        </tr></thead>
-        <tbody id="weeklyBody"></tbody>
-      </table>
-    </div>
-    <button class="add-row-btn" onclick="addRow('weekly')">&#43; Add Weekly Task</button>
-    <div class="summary-card">
-      <div class="summary-title">&#128200; Weekly Workload Summary</div>
-      <div class="kpi-grid">
-        <div class="kpi"><div class="value" id="w_tasks">0</div><div class="label">Tasks Logged</div></div>
-        <div class="kpi"><div class="value" id="w_hours">0.0</div><div class="label">Total Hours/Week</div></div>
-        <div class="kpi"><div class="value" id="w_pct">0%</div><div class="label">Total Workload</div></div>
-      </div>
-      <div class="status-banner status-under" id="w_status">Status: Underutilized</div>
-    </div>
-    <div class="nav-row">
-      <button class="btn btn-secondary" onclick="goTo(2)">&#8592; Back</button>
-      <button class="btn btn-primary" onclick="goTo(4)">Next: Monthly Tasks &#8594;</button>
-    </div>
-  </div>
-</div>
+  <form id="workloadForm" novalidate>
 
-<!-- STEP 4: MONTHLY TASKS -->
-<div class="section-card" id="step4">
-  <div class="section-header"><span class="icon">&#128198;</span><h2>Section 4 — Monthly Tasks</h2></div>
-  <div class="section-body">
-    <p style="color:#7f8c8d;font-size:0.85rem;margin-bottom:14px;">Log tasks completed on a monthly cycle.</p>
-    <div class="task-table-wrap">
-      <table id="monthlyTable">
-        <thead><tr>
-          <th>#</th><th>Task Name / Description</th><th>Category</th>
-          <th>Est. Hours</th><th>Priority</th><th>Workload %</th><th>Notes</th><th></th>
-        </tr></thead>
-        <tbody id="monthlyBody"></tbody>
-      </table>
-    </div>
-    <button class="add-row-btn" onclick="addRow('monthly')">&#43; Add Monthly Task</button>
-    <div class="summary-card">
-      <div class="summary-title">&#128200; Monthly Workload Summary</div>
-      <div class="kpi-grid">
-        <div class="kpi"><div class="value" id="m_tasks">0</div><div class="label">Tasks Logged</div></div>
-        <div class="kpi"><div class="value" id="m_hours">0.0</div><div class="label">Total Hours/Month</div></div>
-        <div class="kpi"><div class="value" id="m_pct">0%</div><div class="label">Total Workload</div></div>
+    <!-- ── SECTION 1: Employee Information ── -->
+    <div class="section-card open accent-daily" id="sec-emp">
+      <div class="section-header" onclick="toggleSection('sec-emp')">
+        <div class="section-icon emp">👤</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Section 1 — Employee Information</div>
+          <div class="section-subtitle">Personal details, branch, and role identification</div>
+        </div>
+        <span class="section-chevron">▾</span>
       </div>
-      <div class="status-banner status-under" id="m_status">Status: Underutilized</div>
+      <div class="section-body">
+        <div class="field-grid">
+          <div class="field-group">
+            <label>Full Name <span class="req">*</span></label>
+            <input type="text" id="fullName" placeholder="e.g. Mohamed Ahmed El-Sayed" required>
+          </div>
+          <div class="field-group">
+            <label>Job Title <span class="req">*</span></label>
+            <select id="jobTitle">
+              <option value="">— Select Job Title —</option>
+              <option>Accountant</option>
+              <option>Senior Accountant</option>
+              <option>SV Accountant</option>
+              <option>Section Head</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Employment Start Date</label>
+            <input type="date" id="startDate" onchange="calcTenure()">
+            <div id="tenureDisplay" style="margin-top:6px;display:none;background:var(--daily-lt);border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--daily);font-weight:600;">
+              ⏱ <span id="tenureText"></span>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>Branch Name <span class="req">*</span></label>
+            <select id="department">
+              <option value="">— Select Branch —</option>
+              <option>CAI</option>
+              <option>Suez</option>
+              <option>PSD</option>
+              <option>Safaga</option>
+              <option>Alex</option>
+              <option>Sokhna</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Team Role <span class="req">*</span></label>
+            <select id="teamRole">
+              <option value="">— Select Role —</option>
+              <option>Casher</option>
+              <option>Gen Accountant</option>
+              <option>Payable Accountant</option>
+              <option>Receivable Accountant</option>
+              <option>Tax</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Direct Manager <span class="req">*</span></label>
+            <input type="text" id="manager" placeholder="e.g. Mostafa Abdelrahman">
+          </div>
+          <div class="field-group">
+            <label>Employee ID <span style="font-weight:400;text-transform:none;color:var(--text-lt)">(optional)</span></label>
+            <input type="text" id="empId" placeholder="e.g. EMP-0042">
+          </div>
+          <div class="field-group">
+            <label>Report Period <span class="req">*</span></label>
+            <input type="text" id="period" placeholder="e.g. May 2026 / W18 2026">
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="nav-row">
-      <button class="btn btn-secondary" onclick="goTo(3)">&#8592; Back</button>
-      <button class="btn btn-primary" onclick="goTo(5)">Next: Assessment &#8594;</button>
-    </div>
-  </div>
-</div>
 
-<!-- STEP 5: ASSESSMENT -->
-<div class="section-card" id="step5">
-  <div class="section-header"><span class="icon">&#128202;</span><h2>Section 5 — Overall Workload Assessment</h2></div>
-  <div class="section-body">
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Overall Workload Rating</label>
-        <select id="overallRating">
-          <option value="">— Select —</option>
-          <option>1 — Very Light</option><option>2 — Light</option><option>3 — Moderate</option>
-          <option>4 — Heavy</option><option>5 — Very Heavy / Overloaded</option>
-        </select>
+    <!-- ── SECTION 2: Daily Tasks ── -->
+    <div class="section-card open accent-daily" id="sec-daily">
+      <div class="section-header" onclick="toggleSection('sec-daily')">
+        <div class="section-icon daily">📅</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Section 2 — Daily Tasks</div>
+          <div class="section-subtitle">Tasks performed every working day</div>
+        </div>
+        <span class="section-chevron">▾</span>
       </div>
-      <div class="form-group">
-        <label>Work-Life Balance Rating</label>
-        <select id="wlbRating">
-          <option value="">— Select —</option>
-          <option>1 — Excellent</option><option>2 — Good</option><option>3 — Acceptable</option>
-          <option>4 — Poor</option><option>5 — Very Poor</option>
-        </select>
-      </div>
-      <div class="form-group full">
-        <label>Key Challenges or Blockers</label>
-        <textarea id="challenges" placeholder="Describe any challenges, resource gaps, or bottlenecks you are currently facing..."></textarea>
-      </div>
-      <div class="form-group full">
-        <label>Suggestions for Improvement</label>
-        <textarea id="suggestions" placeholder="Share any suggestions to improve task allocation or team efficiency..."></textarea>
-      </div>
-      <div class="form-group full">
-        <label>Additional Notes for Management</label>
-        <textarea id="additionalNotes" placeholder="Any other notes you would like management to be aware of..."></textarea>
+      <div class="section-body">
+        <div id="dailyTasksContainer"></div>
+        <button type="button" class="add-task-btn" onclick="addTask('daily')">
+          ＋ Add Daily Task
+        </button>
       </div>
     </div>
-    <div class="summary-card" style="margin-top:24px;">
-      <div class="summary-title">&#127775; Overall Workload Dashboard</div>
-      <div class="kpi-grid">
-        <div class="kpi"><div class="value" id="total_tasks">0</div><div class="label">Total Tasks</div></div>
-        <div class="kpi"><div class="value" id="total_hours">0.0</div><div class="label">Total Hours</div></div>
-        <div class="kpi"><div class="value" id="total_pct">0%</div><div class="label">Avg. Workload</div></div>
+
+    <!-- ── SECTION 3: Weekly Tasks ── -->
+    <div class="section-card accent-weekly" id="sec-weekly">
+      <div class="section-header" onclick="toggleSection('sec-weekly')">
+        <div class="section-icon weekly">📆</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Section 3 — Weekly Tasks</div>
+          <div class="section-subtitle">Tasks performed on a recurring weekly basis</div>
+        </div>
+        <span class="section-chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <div id="weeklyTasksContainer"></div>
+        <button type="button" class="add-task-btn" onclick="addTask('weekly')">
+          ＋ Add Weekly Task
+        </button>
       </div>
     </div>
-    <div class="nav-row" style="margin-top:28px;">
-      <button class="btn btn-secondary" onclick="goTo(4)">&#8592; Back</button>
-      <button class="btn btn-success" id="submitBtn" onclick="submitForm()">
-        <span id="submitText">&#128228; Submit to Management</span>
-        <div class="spinner" id="submitSpinner"></div>
+
+    <!-- ── SECTION 4: Monthly Tasks ── -->
+    <div class="section-card accent-monthly" id="sec-monthly">
+      <div class="section-header" onclick="toggleSection('sec-monthly')">
+        <div class="section-icon monthly">🗓</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Section 4 — Monthly Tasks</div>
+          <div class="section-subtitle">Recurring tasks on a monthly or periodic cycle</div>
+        </div>
+        <span class="section-chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <div id="monthlyTasksContainer"></div>
+        <button type="button" class="add-task-btn" onclick="addTask('monthly')">
+          ＋ Add Monthly Task
+        </button>
+      </div>
+    </div>
+
+    <!-- ── SECTION 5: Assessment ── -->
+    <div class="section-card accent-assess" id="sec-assess">
+      <div class="section-header" onclick="toggleSection('sec-assess')">
+        <div class="section-icon assess">📊</div>
+        <div class="section-title-wrap">
+          <div class="section-title">Section 5 — Overall Workload Assessment</div>
+          <div class="section-subtitle">Self-evaluation and management feedback</div>
+        </div>
+        <span class="section-chevron">▾</span>
+      </div>
+      <div class="section-body">
+        <div class="field-grid full">
+          <div class="field-group">
+            <label>Overall Workload Rating <span class="req">*</span></label>
+            <p class="field-hint" style="margin-bottom:10px">1 = Very underutilized &nbsp;&nbsp;·&nbsp;&nbsp; 5 = Severely overloaded</p>
+            <div class="rating-wrap" id="ratingWrap">
+              <button type="button" class="rating-btn" onclick="setRating(1)"><span class="rating-num">1</span><span class="rating-lbl">Very low</span></button>
+              <button type="button" class="rating-btn" onclick="setRating(2)"><span class="rating-num">2</span><span class="rating-lbl">Low</span></button>
+              <button type="button" class="rating-btn" onclick="setRating(3)"><span class="rating-num">3</span><span class="rating-lbl">Balanced</span></button>
+              <button type="button" class="rating-btn" onclick="setRating(4)"><span class="rating-num">4</span><span class="rating-lbl">High</span></button>
+              <button type="button" class="rating-btn" onclick="setRating(5)"><span class="rating-num">5</span><span class="rating-lbl">Overloaded</span></button>
+            </div>
+            <input type="hidden" id="workloadRating" value="">
+          </div>
+          <div class="divider"></div>
+          <div class="field-group">
+            <label>Are your tasks clearly defined and prioritized? <span class="req">*</span></label>
+            <select id="taskClarity">
+              <option value="">— Select —</option>
+              <option>Yes, very clearly</option><option>Mostly yes</option>
+              <option>Somewhat</option><option>Not really</option><option>No, it is unclear</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Are there significant unlisted tasks? <span class="req">*</span></label>
+            <select id="unlistedTasks">
+              <option value="">— Select —</option>
+              <option>No, the list above is complete</option>
+              <option>Yes, minor unlisted tasks</option>
+              <option>Yes, significant unlisted tasks</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Biggest Workload Challenge <span class="req">*</span></label>
+            <select id="challenge">
+              <option value="">— Select —</option>
+              <option>Too many tasks, not enough time</option>
+              <option>Tasks are unclear or poorly defined</option>
+              <option>Dependency on other team members</option>
+              <option>Lack of tools or resources</option>
+              <option>Repetitive low-value tasks</option>
+              <option>No major challenge at the moment</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Additional Comments or Suggestions</label>
+            <textarea id="comments" placeholder="Any feedback regarding workload, tools, processes, or team structure…"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Submit ── -->
+    <div class="submit-area">
+      <div class="submit-info">
+        <p><strong>Ready to submit?</strong></p>
+        <p>Your response will be saved to the team's Google Sheet and reviewed by your manager within 2 working days.</p>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span id="submitBtnText">Submit Report</span>
+        <span id="submitSpinner" style="display:none"><div class="spinner"></div></span>
       </button>
     </div>
-    <p style="text-align:center;font-size:0.78rem;color:#95a5a6;margin-top:10px;">Your data is securely recorded in the management Google Sheet.</p>
+
+  </form>
+
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2>Report Submitted Successfully</h2>
+    <p>Thank you. Your workload report has been received.<br>Your manager will review it within 2 working days.</p>
+    <button onclick="location.reload()" style="margin-top:24px;padding:10px 24px;background:var(--navy);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:14px;">Submit Another Response</button>
   </div>
+
 </div>
 
-<!-- SUCCESS SCREEN -->
-<div class="success-screen" id="successScreen">
-  <div class="success-icon">&#9989;</div>
-  <h2>Submission Received!</h2>
-  <p>Your workload data has been successfully submitted to management and recorded in the dashboard sheet.</p>
-  <div class="ref-id" id="refId"></div>
-  <button class="btn btn-primary" style="margin-top:24px;" onclick="location.reload()">Submit Another Response</button>
-</div>
-
-</div><!-- /container -->
+<div class="toast" id="toast"></div>
 
 <script>
-// ============================================================
-// CONFIGURATION
-// Replace the URL below with your Google Apps Script Web App URL
-// after setting up the backend (see README for instructions)
-// ============================================================
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-gC-NrTkYvoY86DvhgkmV9kmNeMTWJPSDj2ifqqcHa0ndPe6l4SNjwWRDLiyCDVMs/exec';
-// ============================================================
+// ── CONFIG: paste your Google Apps Script Web App URL here ──
+const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
 
-let currentStep = 1;
-const TOTAL_STEPS = 5;
-let rowCounters = { daily: 0, weekly: 0, monthly: 0 };
-const priorities = ['Critical', 'High', 'Medium', 'Low'];
-const catOptions = { daily: 'Daily', weekly: 'Weekly', monthly: 'Monthly' };
+// ── Task counters ──
+const taskCounts = { daily: 0, weekly: 0, monthly: 0 };
+const taskColors = { daily: 'daily-num', weekly: 'weekly-num', monthly: 'monthly-num' };
 
-function goTo(step) {
-  if (step < 1 || step > TOTAL_STEPS) return;
-  document.getElementById('step' + currentStep).classList.remove('active');
-  currentStep = step;
-  document.getElementById('step' + currentStep).classList.add('active');
-  document.querySelectorAll('.step-pill').forEach(p => {
-    p.classList.toggle('active', parseInt(p.dataset.step) === step);
+const freqOptions = {
+  daily:   ['Daily','Twice Daily','Every Other Day','As Needed'],
+  weekly:  ['Weekly','Twice Weekly','Every Other Week','Bi-weekly','As Needed'],
+  monthly: ['Monthly','Quarterly','Bi-annually','Annually','As Needed'],
+};
+const catOptions = {
+  daily:   ['Daily','Weekly','Monthly','Ad-hoc'],
+  weekly:  ['Daily','Weekly','Monthly','Ad-hoc'],
+  monthly: ['Monthly','Quarterly','Bi-monthly','Annual','Ad-hoc'],
+};
+
+function buildSelect(opts, cls='') {
+  return `<select class="${cls}">${opts.map(o=>`<option>${o}</option>`).join('')}</select>`;
+}
+
+function addTask(type) {
+  taskCounts[type]++;
+  const n = taskCounts[type];
+  const container = document.getElementById(type + 'TasksContainer');
+  const div = document.createElement('div');
+  div.className = 'task-block';
+  div.id = `${type}-task-${n}`;
+  div.innerHTML = `
+    <div class="task-block-header">
+      <div class="task-num ${taskColors[type]}">${n}</div>
+      <input class="task-label-input" type="text" placeholder="Task name / description…" data-field="name">
+      <button type="button" class="task-remove" onclick="removeTask('${type}-task-${n}')" title="Remove task">✕</button>
+    </div>
+    <div class="task-fields">
+      <div class="field-group">
+        <label>Category</label>
+        ${buildSelect(catOptions[type])}
+      </div>
+      <div class="field-group">
+        <label>Estimated Hours</label>
+        <input type="number" min="0.1" max="24" step="0.5" placeholder="e.g. 1.5" data-field="hours">
+      </div>
+      <div class="field-group">
+        <label>Frequency</label>
+        ${buildSelect(freqOptions[type])}
+      </div>
+      <div class="field-group">
+        <label>Priority</label>
+        <select class="priority" data-field="priority">
+          <option>🔴 Critical</option>
+          <option selected>🟠 High</option>
+          <option>🟡 Medium</option>
+          <option>🟢 Low</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>% of Workload</label>
+        <input type="number" min="1" max="100" step="1" placeholder="e.g. 20" data-field="pct">
+      </div>
+      <div class="field-group">
+        <label>Deadline / Due Date</label>
+        <input type="text" placeholder="e.g. Daily by 10 AM" data-field="deadline">
+      </div>
+      <div class="field-group task-note">
+        <label>Notes / Challenges</label>
+        <textarea rows="2" placeholder="Blockers, dependencies, or comments…" data-field="notes"></textarea>
+      </div>
+    </div>`;
+  container.appendChild(div);
+  updateProgress();
+  div.querySelector('.task-label-input').focus();
+}
+
+function removeTask(id) {
+  const el = document.getElementById(id);
+  if (el) { el.style.opacity='0'; el.style.transform='translateX(20px)'; el.style.transition='all 0.2s'; setTimeout(()=>el.remove(), 200); }
+}
+
+function toggleSection(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+let selectedRating = 0;
+function setRating(val) {
+  selectedRating = val;
+  document.getElementById('workloadRating').value = val;
+  document.querySelectorAll('.rating-btn').forEach((btn, i) => {
+    btn.classList.toggle('selected', i < val);
   });
-  document.getElementById('progressBar').style.width = (step / TOTAL_STEPS * 100) + '%';
-  if (step === 5) updateOverallSummary();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function addRow(type) {
-  const tbody = document.getElementById(type + 'Body');
-  const id = ++rowCounters[type];
-  const defCat = catOptions[type];
-  const tr = document.createElement('tr');
-  tr.id = type + '_row_' + id;
-  tr.innerHTML =
-    '<td style="font-weight:600;color:#7f8c8d;min-width:24px">' + id + '</td>' +
-    '<td><input type="text" placeholder="Task description" oninput="updateSummary(\'' + type + '\')" style="min-width:160px"></td>' +
-    '<td><select onchange="updateSummary(\'' + type + '\')">' +
-      '<option>' + defCat + '</option>' +
-      '<option>Daily</option><option>Weekly</option><option>Monthly</option>' +
-      '<option>Administrative</option><option>Reporting</option>' +
-      '<option>Meeting</option><option>Communication</option><option>Other</option>' +
-    '</select></td>' +
-    '<td><input type="number" min="0" max="24" step="0.5" placeholder="hrs" style="width:68px" oninput="updateSummary(\'' + type + '\')"></td>' +
-    '<td><select onchange="updateSummary(\'' + type + '\')">' +
-      priorities.map(function(p){ return '<option>' + p + '</option>'; }).join('') +
-    '</select></td>' +
-    '<td><input type="number" min="0" max="100" step="1" placeholder="%" style="width:60px" oninput="updateSummary(\'' + type + '\')"></td>' +
-    '<td><input type="text" placeholder="Notes" style="min-width:110px"></td>' +
-    '<td><button class="del-btn" onclick="delRow(\'' + type + '\',' + id + ')">&#10006;</button></td>';
-  tbody.appendChild(tr);
-  updateSummary(type);
-}
+function calcTenure() {
+  const startVal = document.getElementById('startDate').value;
+  const display  = document.getElementById('tenureDisplay');
+  const text     = document.getElementById('tenureText');
+  if (!startVal) { display.style.display = 'none'; return; }
 
-function delRow(type, id) {
-  var row = document.getElementById(type + '_row_' + id);
-  if (row) row.remove();
-  updateSummary(type);
-}
+  const start = new Date(startVal);
+  const now   = new Date();
+  if (start > now) { display.style.display = 'none'; return; }
 
-function getTableData(type) {
-  var tbody = document.getElementById(type + 'Body');
-  var rows = tbody.querySelectorAll('tr');
-  var totalHours = 0, totalPct = 0, count = 0, tasks = [];
-  rows.forEach(function(tr) {
-    var ins = tr.querySelectorAll('input, select');
-    if (ins.length < 6) return;
-    var name = ins[0].value.trim();
-    var cat = ins[1].value;
-    var hrs = parseFloat(ins[2].value) || 0;
-    var prio = ins[3].value;
-    var pct = parseFloat(ins[4].value) || 0;
-    var notes = ins[5].value.trim();
-    if (name) { totalHours += hrs; totalPct += pct; count++; tasks.push({name:name,cat:cat,hrs:hrs,prio:prio,pct:pct,notes:notes}); }
-  });
-  return { tasks: tasks, totalHours: totalHours, totalPct: totalPct, count: count };
-}
+  let years  = now.getFullYear() - start.getFullYear();
+  let months = now.getMonth()    - start.getMonth();
+  let days   = now.getDate()     - start.getDate();
 
-function updateSummary(type) {
-  var pfx = type[0];
-  var d = getTableData(type);
-  document.getElementById(pfx + '_tasks').textContent = d.count;
-  document.getElementById(pfx + '_hours').textContent = d.totalHours.toFixed(1);
-  document.getElementById(pfx + '_pct').textContent = Math.round(d.totalPct) + '%';
-  var statusEl = document.getElementById(pfx + '_status');
-  statusEl.className = 'status-banner';
-  var pct = d.totalPct;
-  if (pct > 100) { statusEl.classList.add('status-overloaded'); statusEl.textContent = '\u{1F534} Overloaded (' + Math.round(pct) + '%)'; }
-  else if (pct >= 90) { statusEl.classList.add('status-high'); statusEl.textContent = '\u{1F7E0} High Workload (' + Math.round(pct) + '%)'; }
-  else if (pct >= 70) { statusEl.classList.add('status-optimal'); statusEl.textContent = '\u{1F7E2} Optimal (' + Math.round(pct) + '%)'; }
-  else { statusEl.classList.add('status-under'); statusEl.textContent = '\u{1F535} Underutilized (' + Math.round(pct) + '%)'; }
-}
-
-function updateOverallSummary() {
-  var d = getTableData('daily'), w = getTableData('weekly'), m = getTableData('monthly');
-  document.getElementById('total_tasks').textContent = d.count + w.count + m.count;
-  document.getElementById('total_hours').textContent = (d.totalHours + w.totalHours + m.totalHours).toFixed(1);
-  var avg = (d.totalPct + w.totalPct + m.totalPct) / 3;
-  document.getElementById('total_pct').textContent = Math.round(avg) + '%';
-}
-
-function validateStep1() {
-  var required = ['fullName','jobTitle','department','teamRole','directManager','emailAddress','reportPeriod'];
-  for (var i = 0; i < required.length; i++) {
-    if (!document.getElementById(required[i]).value.trim()) {
-      alert('Please fill in all required fields (marked with *) before proceeding.');
-      document.getElementById(required[i]).focus();
-      goTo(1); return false;
-    }
+  if (days < 0) {
+    months--;
+    days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
   }
-  return true;
+  if (months < 0) { years--; months += 12; }
+
+  const totalMonths = years * 12 + months;
+  let parts = [];
+  if (years  > 0) parts.push(years  + (years  === 1 ? ' year'  : ' years'));
+  if (months > 0) parts.push(months + (months === 1 ? ' month' : ' months'));
+  if (days   > 0 && years === 0) parts.push(days + (days === 1 ? ' day' : ' days'));
+
+  text.textContent = 'Service period: ' + (parts.length ? parts.join(', ') : 'Less than a day');
+  display.style.display = 'block';
+  updateProgress();
 }
 
-function getFormData() {
-  var d = getTableData('daily'), w = getTableData('weekly'), m = getTableData('monthly');
-  return {
-    timestamp: new Date().toISOString(),
-    submissionId: 'WL-' + Date.now(),
-    fullName: document.getElementById('fullName').value,
-    jobTitle: document.getElementById('jobTitle').value,
-    department: document.getElementById('department').value,
-    teamRole: document.getElementById('teamRole').value,
-    directManager: document.getElementById('directManager').value,
-    startDate: document.getElementById('startDate').value,
-    email: document.getElementById('emailAddress').value,
-    reportPeriod: document.getElementById('reportPeriod').value,
-    dailyTaskCount: d.count, dailyTotalHours: d.totalHours, dailyTotalPct: d.totalPct,
-    weeklyTaskCount: w.count, weeklyTotalHours: w.totalHours, weeklyTotalPct: w.totalPct,
-    monthlyTaskCount: m.count, monthlyTotalHours: m.totalHours, monthlyTotalPct: m.totalPct,
-    overallRating: document.getElementById('overallRating').value,
-    wlbRating: document.getElementById('wlbRating').value,
-    challenges: document.getElementById('challenges').value,
-    suggestions: document.getElementById('suggestions').value,
-    additionalNotes: document.getElementById('additionalNotes').value,
-    dailyTasks: JSON.stringify(d.tasks),
-    weeklyTasks: JSON.stringify(w.tasks),
-    monthlyTasks: JSON.stringify(m.tasks)
-  };
+function updateProgress() {
+  const fields = ['fullName','jobTitle','startDate','department','teamRole','manager','period'];
+  const filled = fields.filter(f => document.getElementById(f)?.value?.trim()).length;
+  const hasTasks = taskCounts.daily + taskCounts.weekly + taskCounts.monthly > 0;
+  const hasRating = selectedRating > 0;
+  const pct = Math.round(((filled / fields.length) * 60) + (hasTasks ? 25 : 0) + (hasRating ? 15 : 0));
+  document.getElementById('progressBar').style.width = pct + '%';
 }
 
-function submitForm() {
-  if (!validateStep1()) return;
-  var data = getFormData();
-  var btn = document.getElementById('submitBtn');
-  var txt = document.getElementById('submitText');
-  var spin = document.getElementById('submitSpinner');
+document.querySelectorAll('input, select, textarea').forEach(el => {
+  el.addEventListener('input', updateProgress);
+  el.addEventListener('change', updateProgress);
+});
+
+function collectTasks(type) {
+  return Array.from(document.querySelectorAll(`[id^="${type}-task-"]`)).map(block => ({
+    name:     block.querySelector('[data-field="name"]')?.value || '',
+    category: block.querySelector('select:first-of-type')?.value || '',
+    hours:    block.querySelector('[data-field="hours"]')?.value || '',
+    frequency:block.querySelectorAll('select')[1]?.value || '',
+    priority: block.querySelector('[data-field="priority"]')?.value || '',
+    pct:      block.querySelector('[data-field="pct"]')?.value || '',
+    deadline: block.querySelector('[data-field="deadline"]')?.value || '',
+    notes:    block.querySelector('[data-field="notes"]')?.value || '',
+  })).filter(t => t.name.trim());
+}
+
+function showToast(msg, isError=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = isError ? 'var(--danger)' : 'var(--success)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+document.getElementById('workloadForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const required = ['fullName','jobTitle','startDate','department','teamRole','manager','period'];
+  let valid = true;
+  required.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el.value.trim()) { el.classList.add('invalid'); valid = false; }
+    else el.classList.remove('invalid');
+  });
+  if (!selectedRating) { showToast('Please select a workload rating.', true); valid = false; }
+  if (!valid) { showToast('Please fill in all required fields.', true); return; }
+
+  const btn = document.getElementById('submitBtn');
+  document.getElementById('submitBtnText').style.display = 'none';
+  document.getElementById('submitSpinner').style.display = 'flex';
   btn.disabled = true;
-  txt.textContent = 'Submitting...';
-  spin.style.display = 'inline-block';
 
+  const payload = {
+    timestamp:    new Date().toISOString(),
+    fullName:     document.getElementById('fullName').value,
+    jobTitle:     document.getElementById('jobTitle').value,
+    startDate:    document.getElementById('startDate').value,
+    branchName:   document.getElementById('department').value,
+    teamRole:     document.getElementById('teamRole').value,
+    manager:      document.getElementById('manager').value,
+    empId:        document.getElementById('empId').value,
+    period:       document.getElementById('period').value,
+    dailyTasks:   JSON.stringify(collectTasks('daily')),
+    weeklyTasks:  JSON.stringify(collectTasks('weekly')),
+    monthlyTasks: JSON.stringify(collectTasks('monthly')),
+    workloadRating: selectedRating,
+    taskClarity:  document.getElementById('taskClarity').value,
+    unlistedTasks:document.getElementById('unlistedTasks').value,
+    challenge:    document.getElementById('challenge').value,
+    comments:     document.getElementById('comments').value,
+  };
+
+  // If no script URL configured, show demo success
   if (SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE') {
-    setTimeout(function() { showSuccess(data.submissionId); }, 1500);
+    await new Promise(r => setTimeout(r, 1500));
+    document.getElementById('workloadForm').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
     return;
   }
 
-  var params = new URLSearchParams(data).toString();
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: params
-  }).then(function() {
-    showSuccess(data.submissionId);
-  }).catch(function() {
-    alert('Submission failed. Please try again or contact IT support.');
+  try {
+    const formData = new FormData();
+    Object.entries(payload).forEach(([k,v]) => formData.append(k, v));
+    await fetch(SCRIPT_URL, { method: 'POST', body: formData, mode: 'no-cors' });
+    document.getElementById('workloadForm').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+  } catch(err) {
+    showToast('Submission failed. Please try again or contact IT.', true);
+    document.getElementById('submitBtnText').style.display = 'inline';
+    document.getElementById('submitSpinner').style.display = 'none';
     btn.disabled = false;
-    txt.textContent = '\u{1F4E8} Submit to Management';
-    spin.style.display = 'none';
-  });
-}
+  }
+});
 
-function showSuccess(id) {
-  document.getElementById('step5').classList.remove('active');
-  var s = document.getElementById('successScreen');
-  s.classList.add('show');
-  document.getElementById('refId').textContent = 'Reference ID: ' + id;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-window.onload = function() {
-  addRow('daily'); addRow('daily'); addRow('daily');
-  addRow('weekly'); addRow('weekly');
-  addRow('monthly'); addRow('monthly');
-  document.getElementById('reportPeriod').value = new Date().toISOString().split('T')[0];
-};
+// Initialize with one task per section
+window.addEventListener('DOMContentLoaded', () => {
+  addTask('daily');
+  addTask('weekly');
+  addTask('monthly');
+});
 </script>
 </body>
 </html>
