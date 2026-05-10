@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Employee Workload Tracking — UME Shipping Group</title>
+<title>Employee Workload Tracking â UME Shipping Group</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
 <style>
@@ -376,7 +376,7 @@
     gap: 6px;
   }
   .val-summary ul li:hover { text-decoration: underline; }
-  .val-summary ul li::before { content: '→'; font-weight: 700; }
+  .val-summary ul li::before { content: 'â'; font-weight: 700; }
 
   /* === TASK BLOCK === */
   .task-block {
@@ -715,11 +715,11 @@
 <div class="main-wrap">
 
   <!-- ===============================================================
-       STEP 0 — WELCOME
+       STEP 0 â WELCOME
   =============================================================== -->
   <div class="section-panel active" id="panel-0">
     <div class="section-head-card">
-      <div class="section-step-label">UME Shipping Group — HR &amp; Operations</div>
+      <div class="section-step-label">UME Shipping Group â HR &amp; Operations</div>
       <h2>Employee Workload Tracking Form</h2>
       <p>This form is designed to provide management with an accurate, structured view of your day-to-day responsibilities, task distribution, and overall workload balance. Your input directly informs resource planning and performance reviews.</p>
       <div class="section-head-tags">
@@ -747,17 +747,17 @@
       <div class="divider"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
         <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
-          <div style="font-size:22px;margin-bottom:6px;">📅</div>
+          <div style="font-size:22px;margin-bottom:6px;">ð</div>
           <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;">Daily Tasks</div>
           <div style="font-size:11px;color:var(--text-lt);">Recurring every work day</div>
         </div>
         <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
-          <div style="font-size:22px;margin-bottom:6px;">📆</div>
+          <div style="font-size:22px;margin-bottom:6px;">ð</div>
           <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;">Weekly Tasks</div>
           <div style="font-size:11px;color:var(--text-lt);">Scheduled weekly duties</div>
         </div>
         <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
-          <div style="font-size:22px;margin-bottom:6px;">🗓️</div>
+          <div style="font-size:22px;margin-bottom:6px;">ðï¸</div>
           <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:2px;">Monthly Tasks</div>
           <div style="font-size:11px;color:var(--text-lt);">Periodic or cycle-based work</div>
         </div>
@@ -765,19 +765,19 @@
     </div>
 
     <div class="info-strip">
-      ⚠️ <span>All responses are strictly confidential and used solely for internal HR and operational planning purposes. Do not share this form link with external parties.</span>
+      â ï¸ <span>All responses are strictly confidential and used solely for internal HR and operational planning purposes. Do not share this form link with external parties.</span>
     </div>
 
     <div class="nav-bar">
       <div class="nav-bar-left">
         <span class="nav-step-info">Step 1 of 6</span>
       </div>
-      <button class="btn-next" onclick="nextStep()">Begin Form &nbsp;→</button>
+      <button class="btn-next" onclick="nextStep()">Begin Form &nbsp;â</button>
     </div>
   </div>
 
   <!-- ===============================================================
-       STEP 1 — PERSONAL INFORMATION
+       STEP 1 â PERSONAL INFORMATION
   =============================================================== -->
   <div class="section-panel" id="panel-1">
     <div class="section-head-card">
@@ -792,7 +792,7 @@
 
     <!-- Validation Summary (shown on error) -->
     <div class="val-summary" id="valSummary">
-      <div class="val-summary-title">⚠ Please complete the following required fields:</div>
+      <div class="val-summary-title">â  Please complete the following required fields:</div>
       <ul id="valList"></ul>
     </div>
 
@@ -809,7 +809,7 @@
         <div class="field-group" id="fg-jobTitle">
           <label>Job Title <span class="req">*</span></label>
           <select id="jobTitle">
-            <option value="">— Select Job Title —</option>
+            <option value="">â Select Job Title â</option>
             <option>Accountant</option>
             <option>Senior Accountant</option>
             <option>SV Accountant</option>
@@ -820,7 +820,7 @@
         <div class="field-group" id="fg-department">
           <label>Branch Name <span class="req">*</span></label>
           <select id="department">
-            <option value="">— Select Branch —</option>
+            <option value="">â Select Branch â</option>
             <option>CAI</option>
             <option>Suez</option>
             <option>PSD</option>
@@ -833,7 +833,7 @@
         <div class="field-group" id="fg-teamRole">
           <label>Team Role <span class="req">*</span></label>
           <select id="teamRole">
-            <option value="">— Select Role —</option>
+            <option value="">â Select Role â</option>
             <option>Casher</option>
             <option>Gen Accountant</option>
             <option>Payable Accountant</option>
@@ -861,7 +861,7 @@
           <label>Employment Start Date</label>
           <input type="date" id="startDate" onchange="calcTenure()">
           <div class="tenure-badge" id="tenureDisplay">
-            <span>⏱</span><span id="tenureText"></span>
+            <span>â±</span><span id="tenureText"></span>
           </div>
           <span class="field-hint">Calculates your service period automatically.</span>
         </div>
@@ -876,15 +876,15 @@
 
     <div class="nav-bar">
       <div class="nav-bar-left">
-        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-back" onclick="prevStep()">â Back</button>
         <span class="nav-step-info">Step 2 of 6</span>
       </div>
-      <button class="btn-next" onclick="validateAndNext()">Save &amp; Continue →</button>
+      <button class="btn-next" onclick="validateAndNext()">Save &amp; Continue â</button>
     </div>
   </div>
 
   <!-- ===============================================================
-       STEP 2 — DAILY TASKS
+       STEP 2 â DAILY TASKS
   =============================================================== -->
   <div class="section-panel" id="panel-2">
     <div class="section-head-card daily-theme">
@@ -898,26 +898,26 @@
     </div>
 
     <div class="info-strip">
-      💡 <span>Be specific — enter each task as a separate entry. This helps management accurately map workload distribution across the team.</span>
+      ð¡ <span>Be specific â enter each task as a separate entry. This helps management accurately map workload distribution across the team.</span>
     </div>
 
     <div class="form-card">
       <div class="form-card-title"><span class="form-card-title-dot" style="background:var(--daily)"></span>Daily Task Log</div>
       <div id="dailyTasksContainer"></div>
-      <button type="button" class="add-task-btn" onclick="addTask('daily')">＋ &nbsp;Add Daily Task</button>
+      <button type="button" class="add-task-btn" onclick="addTask('daily')">ï¼ &nbsp;Add Daily Task</button>
     </div>
 
     <div class="nav-bar">
       <div class="nav-bar-left">
-        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-back" onclick="prevStep()">â Back</button>
         <span class="nav-step-info">Step 3 of 6</span>
       </div>
-      <button class="btn-next" onclick="nextStep()">Continue to Weekly →</button>
+      <button class="btn-next" onclick="nextStep()">Continue to Weekly â</button>
     </div>
   </div>
 
   <!-- ===============================================================
-       STEP 3 — WEEKLY TASKS
+       STEP 3 â WEEKLY TASKS
   =============================================================== -->
   <div class="section-panel" id="panel-3">
     <div class="section-head-card weekly-theme">
@@ -931,26 +931,26 @@
     </div>
 
     <div class="info-strip">
-      💡 <span>Include tasks such as team meetings, weekly reports, reconciliations, and supervisor briefings that happen on a weekly cycle.</span>
+      ð¡ <span>Include tasks such as team meetings, weekly reports, reconciliations, and supervisor briefings that happen on a weekly cycle.</span>
     </div>
 
     <div class="form-card">
       <div class="form-card-title"><span class="form-card-title-dot" style="background:var(--weekly)"></span>Weekly Task Log</div>
       <div id="weeklyTasksContainer"></div>
-      <button type="button" class="add-task-btn" onclick="addTask('weekly')">＋ &nbsp;Add Weekly Task</button>
+      <button type="button" class="add-task-btn" onclick="addTask('weekly')">ï¼ &nbsp;Add Weekly Task</button>
     </div>
 
     <div class="nav-bar">
       <div class="nav-bar-left">
-        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-back" onclick="prevStep()">â Back</button>
         <span class="nav-step-info">Step 4 of 6</span>
       </div>
-      <button class="btn-next" onclick="nextStep()">Continue to Monthly →</button>
+      <button class="btn-next" onclick="nextStep()">Continue to Monthly â</button>
     </div>
   </div>
 
   <!-- ===============================================================
-       STEP 4 — MONTHLY TASKS
+       STEP 4 â MONTHLY TASKS
   =============================================================== -->
   <div class="section-panel" id="panel-4">
     <div class="section-head-card monthly-theme">
@@ -964,26 +964,26 @@
     </div>
 
     <div class="info-strip">
-      💡 <span>Consider including month-end closings, payroll processing, variance reports, and any tasks that are tied to calendar cycles.</span>
+      ð¡ <span>Consider including month-end closings, payroll processing, variance reports, and any tasks that are tied to calendar cycles.</span>
     </div>
 
     <div class="form-card">
       <div class="form-card-title"><span class="form-card-title-dot" style="background:var(--monthly)"></span>Monthly Task Log</div>
       <div id="monthlyTasksContainer"></div>
-      <button type="button" class="add-task-btn" onclick="addTask('monthly')">＋ &nbsp;Add Monthly Task</button>
+      <button type="button" class="add-task-btn" onclick="addTask('monthly')">ï¼ &nbsp;Add Monthly Task</button>
     </div>
 
     <div class="nav-bar">
       <div class="nav-bar-left">
-        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-back" onclick="prevStep()">â Back</button>
         <span class="nav-step-info">Step 5 of 6</span>
       </div>
-      <button class="btn-next" onclick="nextStep()">Continue to Assessment →</button>
+      <button class="btn-next" onclick="nextStep()">Continue to Assessment â</button>
     </div>
   </div>
 
   <!-- ===============================================================
-       STEP 5 — ASSESSMENT
+       STEP 5 â ASSESSMENT
   =============================================================== -->
   <div class="section-panel" id="panel-5">
     <div class="section-head-card assess-theme">
@@ -998,13 +998,13 @@
 
     <!-- Validation summary for assessment -->
     <div class="val-summary" id="valSummaryAssess">
-      <div class="val-summary-title">⚠ Please complete the following required fields:</div>
+      <div class="val-summary-title">â  Please complete the following required fields:</div>
       <ul id="valListAssess"></ul>
     </div>
 
     <div class="form-card">
       <div class="form-card-title"><span class="form-card-title-dot" style="background:var(--accent)"></span>Overall Workload Rating <span style="color:var(--danger);font-weight:700">*</span></div>
-      <p class="field-hint" style="margin-bottom:12px">Rate your overall workload level for this reporting period. &nbsp;1 = Very underutilized &nbsp;·&nbsp; 5 = Severely overloaded</p>
+      <p class="field-hint" style="margin-bottom:12px">Rate your overall workload level for this reporting period. &nbsp;1 = Very underutilized &nbsp;Â·&nbsp; 5 = Severely overloaded</p>
       <div class="rating-wrap" id="ratingWrap">
         <button type="button" class="rating-btn" onclick="setRating(1)"><span class="rating-num">1</span><span class="rating-lbl">Very Low</span></button>
         <button type="button" class="rating-btn" onclick="setRating(2)"><span class="rating-num">2</span><span class="rating-lbl">Low</span></button>
@@ -1022,7 +1022,7 @@
         <div class="field-group" id="fg-taskClarity">
           <label>Are your tasks clearly defined and prioritized? <span class="req">*</span></label>
           <select id="taskClarity">
-            <option value="">— Select —</option>
+            <option value="">â Select â</option>
             <option>Yes, very clearly</option>
             <option>Mostly yes</option>
             <option>Somewhat</option>
@@ -1034,7 +1034,7 @@
         <div class="field-group" id="fg-unlistedTasks">
           <label>Are there significant unlisted tasks? <span class="req">*</span></label>
           <select id="unlistedTasks">
-            <option value="">— Select —</option>
+            <option value="">â Select â</option>
             <option>No, the list above is complete</option>
             <option>Yes, minor unlisted tasks</option>
             <option>Yes, significant unlisted tasks</option>
@@ -1044,7 +1044,7 @@
         <div class="field-group span-2" id="fg-challenge">
           <label>Biggest Workload Challenge <span class="req">*</span></label>
           <select id="challenge">
-            <option value="">— Select —</option>
+            <option value="">â Select â</option>
             <option>Too many tasks, not enough time</option>
             <option>Tasks are unclear or poorly defined</option>
             <option>Dependency on other team members</option>
@@ -1057,7 +1057,7 @@
         </div>
         <div class="field-group span-2">
           <label>Additional Comments or Suggestions <span style="font-weight:400;text-transform:none;color:var(--text-lt);font-size:10px">(optional)</span></label>
-          <textarea id="comments" placeholder="Any feedback regarding workload, tools, processes, or team structure…"></textarea>
+          <textarea id="comments" placeholder="Any feedback regarding workload, tools, processes, or team structureâ¦"></textarea>
           <span class="field-hint">Your manager reviews this field personally. Be candid and constructive.</span>
         </div>
       </div>
@@ -1070,7 +1070,7 @@
 
     <div class="nav-bar">
       <div class="nav-bar-left">
-        <button class="btn-back" onclick="prevStep()">← Back</button>
+        <button class="btn-back" onclick="prevStep()">â Back</button>
         <span class="nav-step-info">Step 6 of 6</span>
       </div>
       <button class="btn-submit" id="submitBtn" onclick="submitForm()">
@@ -1084,10 +1084,10 @@
        THANK YOU PANEL
   =============================================================== -->
   <div class="thank-you-panel" id="thankYouPanel">
-    <div class="ty-icon">✓</div>
+    <div class="ty-icon">â</div>
     <h2>Report Submitted Successfully</h2>
     <p class="ty-sub">Thank you for completing your workload report. Your submission has been received by the HR &amp; Operations Division and will be reviewed by your direct manager.</p>
-    <p class="ty-ref" id="tyRef">Reference: <span id="tyRefCode">—</span></p>
+    <p class="ty-ref" id="tyRef">Reference: <span id="tyRefCode">â</span></p>
     <div class="ty-divider"></div>
     <p style="font-size:13px;color:var(--text-mid);margin-bottom:20px;">Expected review turnaround: <strong>2 working days</strong>. You will be contacted if clarification is required.</p>
     <div class="ty-actions">
@@ -1104,7 +1104,7 @@
 // ======================================================
 // CONFIG
 // ======================================================
-const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz-gC-NrTkYvoY86DvhgkmV9kmNeMTWJPSDj2ifqqcHa0ndPe6l4SNjwWRDLiyCDVMs/exec';
 
 // ======================================================
 // STEP NAVIGATION
@@ -1121,7 +1121,7 @@ function goToStep(n) {
   if (n > currentStep) {
     document.getElementById('nav-' + currentStep).classList.add('completed');
     const dot = document.querySelector('#nav-' + currentStep + ' .step-dot');
-    if (dot) dot.textContent = '✓';
+    if (dot) dot.textContent = 'â';
   }
   currentStep = n;
   document.getElementById('panel-' + currentStep).classList.add('active');
@@ -1209,7 +1209,7 @@ function validateAndNext() {
     return;
   }
 
-  // All good — proceed
+  // All good â proceed
   summary.classList.remove('show');
   nextStep();
 }
@@ -1389,8 +1389,8 @@ function addTask(type) {
   div.innerHTML =
     '<div class="task-block-header">' +
       '<div class="task-num ' + taskColors[type] + '">' + n + '</div>' +
-      '<input class="task-label-input" type="text" placeholder="Task name / description…" data-field="name">' +
-      '<button type="button" class="task-remove" onclick="removeTask(\'' + type + '-task-' + n + '\')" title="Remove task">✕</button>' +
+      '<input class="task-label-input" type="text" placeholder="Task name / descriptionâ¦" data-field="name">' +
+      '<button type="button" class="task-remove" onclick="removeTask(\'' + type + '-task-' + n + '\')" title="Remove task">â</button>' +
     '</div>' +
     '<div class="task-fields">' +
       '<div class="field-group"><label>Category</label>' + buildSelect(catOptions[type]) + '</div>' +
@@ -1398,15 +1398,15 @@ function addTask(type) {
       '<div class="field-group"><label>Frequency</label>' + buildSelect(freqOptions[type]) + '</div>' +
       '<div class="field-group"><label>Priority</label>' +
         '<select class="priority" data-field="priority">' +
-          '<option>🔴 Critical</option>' +
-          '<option selected>🟠 High</option>' +
-          '<option>🟡 Medium</option>' +
-          '<option>🟢 Low</option>' +
+          '<option>ð´ Critical</option>' +
+          '<option selected>ð  High</option>' +
+          '<option>ð¡ Medium</option>' +
+          '<option>ð¢ Low</option>' +
         '</select>' +
       '</div>' +
       '<div class="field-group"><label>% of Workload</label><input type="number" min="1" max="100" step="1" placeholder="e.g. 20" data-field="pct"></div>' +
       '<div class="field-group"><label>Deadline / Due Date</label><input type="text" placeholder="e.g. Daily by 10 AM" data-field="deadline"></div>' +
-      '<div class="field-group task-note"><label>Notes / Challenges</label><textarea rows="2" placeholder="Blockers, dependencies, or comments…" data-field="notes"></textarea></div>' +
+      '<div class="field-group task-note"><label>Notes / Challenges</label><textarea rows="2" placeholder="Blockers, dependencies, or commentsâ¦" data-field="notes"></textarea></div>' +
     '</div>';
   container.appendChild(div);
   // Animate in
@@ -1507,7 +1507,7 @@ function updateProgress() {
 // ======================================================
 function showToast(msg, isError = false) {
   const t = document.getElementById('toast');
-  t.innerHTML = (isError ? '⚠ ' : '✓ ') + msg;
+  t.innerHTML = (isError ? 'â  ' : 'â ') + msg;
   t.style.background = isError ? 'var(--danger)' : 'var(--success)';
   t.classList.add('show');
   clearTimeout(window._toastTimer);
